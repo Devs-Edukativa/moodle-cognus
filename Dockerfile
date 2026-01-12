@@ -1,5 +1,6 @@
 # Use uma imagem base oficial do PHP com Apache
-FROM php:8.3-apache
+# Especifica a plataforma para evitar problemas de arquitetura
+FROM --platform=linux/amd64 php:8.3-apache
 
 # Instalar dependências de sistema para o Moodle
 RUN apt-get update && apt-get install -y \

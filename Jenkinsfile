@@ -50,7 +50,7 @@ pipeline {
                     
                     // Build e push da imagem
                     sh """
-                        docker build -t ${DOCKER_IMAGE}:${imageTag} .
+                        docker build --platform linux/amd64 -t ${DOCKER_IMAGE}:${imageTag} .
                         docker tag ${DOCKER_IMAGE}:${imageTag} ${DOCKER_IMAGE}:latest
                         
                         docker push ${DOCKER_IMAGE}:${imageTag}
