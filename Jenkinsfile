@@ -24,12 +24,6 @@ pipeline {
 
         stage('Build & Publish Docker Image') {
             agent { label 'docker-build' }
-            when {
-                branch 'main'
-                not {
-                    changelog '.*\\[skip ci\\].*'
-                }
-            }
             steps {
                 script {
                     echo "🐳 Building and publishing Docker image..."
@@ -61,12 +55,6 @@ pipeline {
 
         stage('Deploy to Production') {
             agent { label 'edukativa-server' }
-            when {
-                branch 'main'
-                not {
-                    changelog '.*\\[skip ci\\].*'
-                }
-            }
             steps {
                 script {
                     echo "🚀 Deploying to production..."
@@ -132,12 +120,6 @@ pipeline {
 
         stage('Verify Deployment') {
             agent { label 'edukativa-server' }
-            when {
-                branch 'main'
-                not {
-                    changelog '.*\\[skip ci\\].*'
-                }
-            }
             steps {
                 script {
                     echo "🔍 Verifying deployment..."
