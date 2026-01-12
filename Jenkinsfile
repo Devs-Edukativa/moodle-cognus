@@ -4,6 +4,16 @@ pipeline {
     triggers {
         githubPush()
         pollSCM('H/5 * * * *')
+        // Webhook genérico para disparar builds via Moodle
+        GenericTrigger(
+            genericVariables: [
+                [key: 'ref', value: '$.ref', defaultValue: 'main']
+            ],
+            token: 'moodle-cognus-auto-build',
+            causeString: 'Triggered by Moodle plugin installation',
+            printContributedVariables: true,
+            printPostContent: true
+        )
     }
 
     environment {

@@ -13,5 +13,5 @@
  defined('MOODLE_INTERNAL') || die();
 
  $plugin->component = 'local_edukativa_apis';
- $plugin->version = 2024080300;
+ $plugin->version = 2025121601; // Atualizado: Observers para sincronização automática com backend
  $plugin->requires = 2022041900;

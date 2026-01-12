@@ -43,11 +43,15 @@ function get_all_enrolls($limit, $skip)
   require_once($CFG->dirroot . '/user/lib.php');
   require_once($CFG->libdir . '/completionlib.php');
 
-  // Abordagem direta para obter matrículas com paginação - agora incluindo enddate
-  $sql = "SELECT ue.id as ueid, ue.userid, c.id as courseid, c.shortname, c.fullname, c.startdate, c.enddate, ue.timestart as enrolmentstart, ue.timecreated 
+  // Abordagem direta para obter matrículas com paginação - agora incluindo enddate e role
+  $sql = "SELECT ue.id as ueid, ue.userid, c.id as courseid, c.shortname, c.fullname, c.startdate, c.enddate, 
+                 ue.timestart as enrolmentstart, ue.timecreated, r.shortname as role
             FROM {user_enrolments} ue
             JOIN {enrol} e ON ue.enrolid = e.id
             JOIN {course} c ON e.courseid = c.id
+            LEFT JOIN {context} ctx ON ctx.instanceid = c.id AND ctx.contextlevel = 50
+            LEFT JOIN {role_assignments} ra ON ra.userid = ue.userid AND ra.contextid = ctx.id
+            LEFT JOIN {role} r ON r.id = ra.roleid
             ORDER BY ue.userid, c.id";
 
   if ($limit > 0) {
@@ -128,7 +132,8 @@ function get_all_enrolls($limit, $skip)
       'completed' => $completed,
       'timecompleted' => $timecompleted,
       'startdate' => (int) $enrollment->enrolmentstart?: $enrollment->timecreated ?: time(),
-      'lastaccess' => (int) ($lastaccess ?: 0)
+      'lastaccess' => (int) ($lastaccess ?: 0),
+      'role' => $enrollment->role ?: 'student'
     ];
   }
 
@@ -143,12 +148,15 @@ function get_user_enrolls($userid, $limit = 0, $skip = 0)
   require_once($CFG->dirroot . '/user/lib.php');
   require_once($CFG->libdir . '/completionlib.php');
 
-  // Filtrar matrículas por usuário específico
+  // Filtrar matrículas por usuário específico incluindo role
   $sql = "SELECT ue.id as ueid, ue.userid, c.id as courseid, c.shortname, c.fullname, c.startdate, c.enddate,
-            ue.timestart as enrolmentstart, ue.timecreated
+            ue.timestart as enrolmentstart, ue.timecreated, r.shortname as role
             FROM {user_enrolments} ue
             JOIN {enrol} e ON ue.enrolid = e.id
             JOIN {course} c ON e.courseid = c.id
+            LEFT JOIN {context} ctx ON ctx.instanceid = c.id AND ctx.contextlevel = 50
+            LEFT JOIN {role_assignments} ra ON ra.userid = ue.userid AND ra.contextid = ctx.id
+            LEFT JOIN {role} r ON r.id = ra.roleid
             WHERE ue.userid = :userid
             ORDER BY c.id";
   $params = ['userid' => $userid];
@@ -232,7 +240,8 @@ function get_user_enrolls($userid, $limit = 0, $skip = 0)
       'timecompleted' => $timecompleted,
       'startdate' => (int) $enrollment->enrolmentstart?: $enrollment->timecreated ?: time(),
       'enddate' => (int) ($enrollment->enddate ?? 0),
-      'lastaccess' => (int) ($lastaccess ?: 0)
+      'lastaccess' => (int) ($lastaccess ?: 0),
+      'role' => $enrollment->role ?: 'student'
     ];
   }
 
@@ -247,12 +256,15 @@ function get_course_enrolls($courseid, $limit = 0, $skip = 0)
   require_once($CFG->dirroot . '/user/lib.php');
   require_once($CFG->libdir . '/completionlib.php');
 
-  // Filtrar matrículas por curso específico
+  // Filtrar matrículas por curso específico incluindo role
   $sql = "SELECT ue.id as ueid, ue.userid, c.id as courseid, c.shortname, c.fullname, c.startdate, c.enddate,
-            ue.timestart as enrolmentstart, ue.timecreated
+            ue.timestart as enrolmentstart, ue.timecreated, r.shortname as role
             FROM {user_enrolments} ue
             JOIN {enrol} e ON ue.enrolid = e.id
             JOIN {course} c ON e.courseid = c.id
+            LEFT JOIN {context} ctx ON ctx.instanceid = c.id AND ctx.contextlevel = 50
+            LEFT JOIN {role_assignments} ra ON ra.userid = ue.userid AND ra.contextid = ctx.id
+            LEFT JOIN {role} r ON r.id = ra.roleid
             WHERE c.id = :courseid
             ORDER BY ue.userid";
   $params = ['courseid' => $courseid];
@@ -336,7 +348,117 @@ function get_course_enrolls($courseid, $limit = 0, $skip = 0)
       'timecompleted' => $timecompleted,
       'startdate' => (int) $enrollment->enrolmentstart?: $enrollment->timecreated ?: time(),
       'enddate' => (int) ($enrollment->enddate ?? 0),
-      'lastaccess' => (int) ($lastaccess ?: 0)
+      'lastaccess' => (int) ($lastaccess ?: 0),
+      'role' => $enrollment->role ?: 'student'
+    ];
+  }
+
+  echo json_encode($results);
+}
+
+function get_user_teaching_courses($userid, $limit = 0, $skip = 0)
+{
+  global $DB, $CFG;
+
+  require_once($CFG->dirroot . '/course/lib.php');
+  require_once($CFG->dirroot . '/user/lib.php');
+  require_once($CFG->libdir . '/completionlib.php');
+
+  // Buscar cursos onde o usuário tem papel de professor/gerente/coursecreator
+  $sql = "SELECT ue.id as ueid, ue.userid, c.id as courseid, c.shortname, c.fullname, c.startdate, c.enddate,
+            ue.timestart as enrolmentstart, ue.timecreated, r.shortname as role
+            FROM {user_enrolments} ue
+            JOIN {enrol} e ON ue.enrolid = e.id
+            JOIN {course} c ON e.courseid = c.id
+            LEFT JOIN {context} ctx ON ctx.instanceid = c.id AND ctx.contextlevel = 50
+            LEFT JOIN {role_assignments} ra ON ra.userid = ue.userid AND ra.contextid = ctx.id
+            LEFT JOIN {role} r ON r.id = ra.roleid
+            WHERE ue.userid = :userid
+            AND r.shortname IN ('editingteacher', 'teacher', 'manager', 'coursecreator')
+            ORDER BY c.startdate DESC";
+  $params = ['userid' => $userid];
+
+  if ($limit > 0) {
+    $enrollments = $DB->get_records_sql($sql, $params, (int) $skip, (int) $limit);
+  } else {
+    $enrollments = $DB->get_records_sql($sql, $params);
+  }
+
+  if (empty($enrollments)) {
+    echo json_encode([]);
+    return;
+  }
+
+  $results = [];
+  foreach ($enrollments as $enrollment) {
+    $userid = (int) $enrollment->userid;
+    $courseid = (int) $enrollment->courseid;
+
+    // Obtenção do último acesso
+    $lastaccess = $DB->get_field('user_lastaccess', 'timeaccess', [
+      'userid' => $userid,
+      'courseid' => $courseid
+    ], IGNORE_MISSING);
+
+    // Obtendo o progresso e status de conclusão
+    $progress = 0;
+    $completed = false;
+    $timecompleted = 0;
+
+    // Obtendo objeto do curso para trabalhar com completion e imagem
+    $course = $DB->get_record('course', ['id' => $courseid]);
+
+    // Verificar se o curso tem acompanhamento de progresso habilitado
+    if ($DB->record_exists('course', ['id' => $courseid, 'enablecompletion' => 1])) {
+      $completion = new completion_info($course);
+      if ($completion->is_tracked_user($userid)) {
+        // Verificar se o curso foi concluído
+        $completed = $completion->is_course_complete($userid);
+
+        // Obter timestamp da conclusão do curso
+        $completionRecord = $DB->get_record(
+          'course_completions',
+          ['userid' => $userid, 'course' => $courseid],
+          'timecompleted',
+          IGNORE_MISSING
+        );
+
+        if ($completionRecord && !empty($completionRecord->timecompleted)) {
+          $timecompleted = (int) $completionRecord->timecompleted;
+        }
+
+        // Obter o percentual de progresso
+        $progressPercent = \core_completion\progress::get_course_progress_percentage($course, $userid);
+        $progress = is_null($progressPercent) ? 0 : floor($progressPercent);
+      }
+    }
+
+    // Obter imagem do curso
+    $courseimage = '';
+    if (class_exists('\core_course\external\course_summary_exporter')) {
+      $courseobj = new stdClass();
+      $courseobj->id = $courseid;
+      $courseimage = \core_course\external\course_summary_exporter::get_course_image($courseobj);
+      if (empty($courseimage)) {
+        $courseimage = '';
+      }
+    }
+
+    $results[] = [
+      'id' => (int) $courseid,
+      'courseid' => (int) $courseid,
+      'userid' => (int) $userid,
+      'shortname' => $enrollment->shortname,
+      'fullname' => $enrollment->fullname,
+      'displayname' => $enrollment->fullname,
+      'courseimage' => $courseimage,
+      'progress' => (int) $progress,
+      'completed' => $completed,
+      'timecompleted' => $timecompleted,
+      'startdate' => (int) $enrollment->enrolmentstart?: $enrollment->timecreated ?: time(),
+      'enddate' => (int) ($enrollment->enddate ?? 0),
+      'lastaccess' => (int) ($lastaccess ?: 0),
+      'role' => $enrollment->role
     ];
   }
 
@@ -359,6 +481,9 @@ if (isset($data['wsfunction'])) {
       break;
     case 'get_course_enrolls':
       get_course_enrolls($courseid, $limit, $skip);
+      break;
+    case 'get_user_teaching_courses':
+      get_user_teaching_courses($userid, $limit, $skip);
       break;
     default:
       echo json_encode(['status' => 'error', 'message' => 'Função inválida.']);
