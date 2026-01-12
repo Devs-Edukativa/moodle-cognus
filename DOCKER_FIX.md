@@ -154,7 +154,7 @@ Se quiser que o Jenkins use buildx automaticamente:
 sh """
     # Criar builder se não existir
     docker buildx create --name jenkins-builder --use 2>/dev/null || docker buildx use jenkins-builder
-    
+
     # Build com buildx
     docker buildx build \
         --platform linux/amd64 \
@@ -168,6 +168,7 @@ sh """
 ## Explicação do erro
 
 O erro "exec format error" acontece quando:
+
 - **Binário ARM tentando rodar em x86_64** (ou vice-versa)
 - **Imagem construída em Mac M1/M2** (ARM) rodando em servidor Linux x86_64
 - **Cache do Docker** mantendo a imagem antiga da arquitetura errada

@@ -23,13 +23,13 @@ pipeline {
         }
 
         stage('Build & Publish Docker Image') {
-            agent { label 'docker-build' }
+            agent { label 'edukativa-server' }
             steps {
                 script {
-                    echo "🐳 Building and publishing Docker image..."
+                    echo "🐳 Building and publishing Docker image on ARM64..."
                     
                     // Login no Docker Hub
-                    sh "echo ${DOCKER_HUB_CREDS_PSW} | docker login -u ${DOCKER_HUB_CREDS_USR} --password-stdin"
+                    sh "echo ${DOCKER_HUB_CREDS_PSW} | sudo docker login -u ${DOCKER_HUB_CREDS_USR} --password-stdin"
                     
                     // Gerar tags
                     def buildDate = sh(script: "date +'%Y%m%d%H%M'", returnStdout: true).trim()
@@ -38,13 +38,13 @@ pipeline {
                     
                     echo "📋 Building with tags: ${imageTag}, latest"
                     
-                    // Build e push da imagem
+                    // Build e push da imagem (sem --platform pois já está em ARM)
                     sh """
-                        docker build --platform linux/amd64 -t ${DOCKER_IMAGE}:${imageTag} .
-                        docker tag ${DOCKER_IMAGE}:${imageTag} ${DOCKER_IMAGE}:latest
+                        sudo docker build --no-cache -t ${DOCKER_IMAGE}:${imageTag} .
+                        sudo docker tag ${DOCKER_IMAGE}:${imageTag} ${DOCKER_IMAGE}:latest
                         
-                        docker push ${DOCKER_IMAGE}:${imageTag}
-                        docker push ${DOCKER_IMAGE}:latest
+                        sudo docker push ${DOCKER_IMAGE}:${imageTag}
+                        sudo docker push ${DOCKER_IMAGE}:latest
                     """
                     
                     // Salvar tag para próximo stage
@@ -59,11 +59,7 @@ pipeline {
                 script {
                     echo "🚀 Deploying to production..."
                     
-                    // Login no Docker Hub
-                    sh "echo ${DOCKER_HUB_CREDS_PSW} | sudo docker login -u ${DOCKER_HUB_CREDS_USR} --password-stdin"
-                    
-                    // Pull da imagem
-                    sh "sudo docker pull ${DOCKER_IMAGE}:latest"
+                    // Não precisa fazer pull, já temos a imagem recém-buildada localmente
                     
                     // Parar e remover container existente
                     sh """
