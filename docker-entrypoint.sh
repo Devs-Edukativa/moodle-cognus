@@ -54,19 +54,6 @@ else
     echo -e "${GREEN}[Moodle Container] config.php already exists${NC}"
 fi
 
-# Ajustar permissões
-chown -R www-data:www-data /var/www/html
-chown -R www-data:www-data /var/www/moodledata
-
-echo -e "${GREEN}[Moodle Container] Permissions set${NC}"
-
-# Verificar se moodledata tem as pastas necessárias
-if [ ! -d /var/www/moodledata/cache ]; then
-    echo -e "${YELLOW}[Moodle Container] Creating moodledata structure...${NC}"
-    mkdir -p /var/www/moodledata/{cache,localcache,sessions,temp,trashdir}
-    chown -R www-data:www-data /var/www/moodledata
-fi
-
 echo -e "${GREEN}[Moodle Container] Initialization complete. Starting Apache...${NC}"
 
 # Executar o comando original do Apache
