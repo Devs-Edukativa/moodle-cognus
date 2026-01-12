@@ -1,0 +1,117 @@
+.advacheck {
+    display: inline-block;
+    font-size: 87% !important;
+}
+
+.advacheck-plagiarismresult {
+    display: inline-block;
+}
+
+.advacheck-green {
+    display: inline-block;
+    background-color: #dff0d8;
+    border-color: #155724;
+    color: #155724;
+}
+
+.advacheck-blue {
+    display: inline-block;
+    background-color: #d9edf7;
+    border-color: #b0b0b0;
+    color: #1e626d;
+}
+
+.advacheck-red {
+    display: inline-block;
+    background-color: #f2dede;
+    border-color: #721C24;
+    color: #721C24;
+}
+
+.advacheck-gray {
+    display: inline-block;
+    background-color: #e5e5e5;
+    border-color: #5e5e5e;
+    color: #5e5e5e;
+}
+
+.advacheck-loader {
+    width: 20px;
+    display: inline;
+}
+
+.advacheck-hidden {
+    display: none;
+}
+
+.advacheck-report {
+    display: none;
+}
+
+.advacheck-data {
+    display: none !important;
+}
+
+.advacheck-hidden {
+    display: none !important;
+}
+
+.advacheck_help {
+    display: none;
+}
+
+.advacheck-suspiciousoff {
+    display: none !important;
+}
+
+.advacheck-suspiciouson {
+    display: inline-block !important;
+}
+
+.advacheck-green_icon {
+    font-size: 100%;
+    color: #155724;
+}
+
+.advacheck-red_icon {
+    font-size: 100%;
+    color: #721C24;
+}
+
+.fa-solid.fa-arrow-right.advacheck-green_icon {
+    padding: 4px 5px 4px 5px;
+}
+
+.fa-solid.fa-arrow-right.advacheck-green_icon:hover {
+    box-shadow: 0px 0px 100px 0px #155724 inset;
+    border-radius: 50%;
+    color: #dff0d8;
+}
+
+.fa-solid.fa-arrow-right.advacheck-red_icon {
+    padding: 4px 5px 4px 5px;
+}
+
+.fa-solid.fa-arrow-right.advacheck-red_icon:hover {
+    box-shadow: 0px 0px 100px 0px #721C24 inset;
+    border-radius: 50%;
+    color: #f2dede;
+}
+
+#advacheckgray {
+    color: #405178;
+}
+
+#advacheckaligncenter {
+    align-content: center;
+}
+
+.badge.badge-pill.advacheck-plagiarismresult {
+    min-height: 32px;
+    font-size: 87% !important;
+}
+
+.badge.badge-pill.advacheck-gray {
+    min-height: 32px;
+    font-size: 87% !important;
+}

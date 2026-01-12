@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="plagiarism/advacheck/db" VERSION="20220831" COMMENT=""
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+    <TABLES>
+        <TABLE NAME="plagiarism_advacheck_docs" COMMENT="">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT=""/>
+                <FIELD NAME="doctype" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="typeid" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="answerid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="error" TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="assignment" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="discussion" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="workshop" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
+                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="plagiarism" TYPE="number" LENGTH="5" NOTNULL="false" SEQUENCE="false" DECIMALS="2" COMMENT=""/>
+                <FIELD NAME="legal" TYPE="number" LENGTH="5" NOTNULL="false" SEQUENCE="false" DECIMALS="2" COMMENT=""/>
+                <FIELD NAME="selfcite" TYPE="number" LENGTH="5" NOTNULL="false" SEQUENCE="false" DECIMALS="2" COMMENT=""/>
+                <FIELD NAME="issuspicious" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="reportedit" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="reportread" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="shortreport" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="externalid" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="status" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="timeadded" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="timeupload_start" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
+                <FIELD NAME="timeupload_end" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
+                <FIELD NAME="timecheck_start" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
+                <FIELD NAME="timecheck_end" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
+                <FIELD NAME="teacherid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="stud_check" TYPE="int" LENGTH="2" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="type" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="attemptnumber" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT=""/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" COMMENT=""/>
+                <KEY NAME="discussion" TYPE="foreign" FIELDS="discussion" REFTABLE="forum_discussions" REFFIELDS="id" COMMENT=""/>
+                <KEY NAME="assignment" TYPE="foreign" FIELDS="assignment" REFTABLE="assign" REFFIELDS="id" COMMENT=""/>
+                <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id" COMMENT=""/>
+                <KEY NAME="cmid" TYPE="foreign" FIELDS="cmid" REFTABLE="course_modules" REFFIELDS="id" COMMENT=""/>
+                <KEY NAME="teacherid" TYPE="foreign" FIELDS="teacherid" REFTABLE="user" REFFIELDS="id"/>
+                <KEY NAME="workshop" TYPE="foreign" FIELDS="workshop" REFTABLE="workshop" REFFIELDS="id"/>
+            </KEYS>
+            <INDEXES>
+                <INDEX NAME="doctype" UNIQUE="false" FIELDS="doctype" COMMENT=""/>
+                <INDEX NAME="typeid" UNIQUE="false" FIELDS="typeid" COMMENT=""/>
+                <INDEX NAME="answerid" UNIQUE="false" FIELDS="answerid" COMMENT=""/>
+                <INDEX NAME="timeupload_start" UNIQUE="false" FIELDS="timeupload_start"/>
+                <INDEX NAME="timeupload_end" UNIQUE="false" FIELDS="timeupload_end"/>
+                <INDEX NAME="timecheck_start" UNIQUE="false" FIELDS="timecheck_start"/>
+                <INDEX NAME="timecheck_end" UNIQUE="false" FIELDS="timecheck_end"/>
+                <INDEX NAME="externalid" UNIQUE="false" FIELDS="externalid" COMMENT=""/>
+            </INDEXES>
+        </TABLE>
+        <TABLE NAME="plagiarism_advacheck_course" COMMENT="">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT=""/>
+                <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="mode" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="checktext" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="checkfile" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="check_stud_lim" TYPE="int" LENGTH="2" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="add_to_index" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="1" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="disp_notices" TYPE="int" LENGTH="2" NOTNULL="false" DEFAULT="1" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="works_types" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="docsecttitle" TYPE="binary" NOTNULL="false" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="docsectcontent" TYPE="binary" NOTNULL="false" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="docsectbibliography" TYPE="binary" NOTNULL="false" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="docsectappendix" TYPE="binary" NOTNULL="false" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="docsectintroduction" TYPE="binary" NOTNULL="false" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="docsectmethod" TYPE="binary" NOTNULL="false" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="docsectconclusion" TYPE="binary" NOTNULL="false" SEQUENCE="false" COMMENT=""/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id" COMMENT=""/>
+                <KEY NAME="cmid" TYPE="foreign" FIELDS="cmid" REFTABLE="course_modules" REFFIELDS="id" COMMENT=""/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="plagiarism_advacheck_act_log" COMMENT="">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="docid" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="time_action" TYPE="number" LENGTH="14" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT=""/>
+                <FIELD NAME="time_action_hr" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="docidantplgt" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="reportedit" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="action" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="status" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="assignment" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="discussion" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="verifier_initiator" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="answerid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT=""/>
+                <FIELD NAME="errormessage" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="cmsettings" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT=""/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="docid" TYPE="foreign" FIELDS="docid" REFTABLE="plagiarism_advacheck_docs" REFFIELDS="id"/>
+                <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+                <KEY NAME="cmid" TYPE="foreign" FIELDS="cmid" REFTABLE="course_modules" REFFIELDS="id"/>
+                <KEY NAME="assignment" TYPE="foreign" FIELDS="assignment" REFTABLE="assign" REFFIELDS="id"/>
+                <KEY NAME="discussion" TYPE="foreign" FIELDS="discussion" REFTABLE="forum_discussions" REFFIELDS="id"/>
+                <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+            </KEYS>
+            <INDEXES>
+                <INDEX NAME="docidantplgt" UNIQUE="false" FIELDS="docidantplgt"/>
+                <INDEX NAME="answerid" UNIQUE="false" FIELDS="answerid"/>
+                <INDEX NAME="verifier_initiator" UNIQUE="false" FIELDS="verifier_initiator"/>
+            </INDEXES>
+        </TABLE>        
+    </TABLES>
+</XMLDB>
