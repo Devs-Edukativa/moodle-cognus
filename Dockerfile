@@ -20,7 +20,6 @@ RUN apt-get update && apt-get install -y \
 
 # Configurar e instalar extensões PHP necessárias para o Moodle
 RUN docker-php-ext-configure gd --with-jpeg \
-    && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu \
     && docker-php-ext-install -j$(nproc) \
     gd \
     mysqli \
@@ -30,9 +29,7 @@ RUN docker-php-ext-configure gd --with-jpeg \
     zip \
     intl \
     opcache \
-    exif \
-    xmlrpc \
-    ldap
+    exif
 
 # Configurar Apache
 RUN a2enmod rewrite expires headers ssl
