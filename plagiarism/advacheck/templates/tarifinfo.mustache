@@ -1,0 +1,73 @@
+{{!
+    This file is part of Moodle - https://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template plagiarism_advacheck/tarifinfo
+
+    Template purpose and description.
+
+    Classes required for JS:
+    * none
+
+    Data attributes required for JS:
+    * none
+
+    Context variables required for this template:
+    * none
+
+    Example context (json):
+    {
+    }
+}}
+<div class="alert alert-success alert-block fade in  alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <p>{{#str}}success_check, plagiarism_advacheck{{/str}}</p>
+    <div>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;{{#str}}tarifname, plagiarism_advacheck{{/str}}&nbsp;&nbsp;&nbsp;</span>
+        <span>{{tarif.Name}}</span>
+    </div>
+    <div>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;{{#str}}subscriptiondate, plagiarism_advacheck{{/str}}&nbsp;&nbsp;&nbsp;</span>
+        <span>{{tarif.SubscriptionDate}}</span>
+    </div>
+    <div>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;{{#str}}expirationdate, plagiarism_advacheck{{/str}}&nbsp;&nbsp;&nbsp;</span>
+        <span>{{tarif.ExpirationDate}}</span>
+    </div>
+    <div>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;{{#str}}totalcheckscount, plagiarism_advacheck{{/str}}&nbsp;&nbsp;&nbsp;</span>
+        <span>{{{tarif.TotalChecksCount}}}</span>
+    </div>
+    <div>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;{{#str}}remainedcheckscount, plagiarism_advacheck{{/str}}&nbsp;&nbsp;&nbsp;</span>
+        <span>{{{tarif.RemainedChecksCount}}}</span>
+    </div>
+    <div>
+        <p><span><b>{{#str}}checkservices, plagiarism_advacheck{{/str}}</b></span></p>
+    </div>
+    
+    {{#serviceslist}}
+        <div>
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;{{Code}}:&nbsp;&nbsp;&nbsp;</span>
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;{{Description}}</span>
+        </div>
+    {{/serviceslist}}
+    
+    <div>
+        <p><span><b>{{#str}}check_site, plagiarism_advacheck{{/str}}</b></span></p>
+        <a href="{{url}}" target="_blank" aria-label="{{#str}}check_site, plagiarism_advacheck{{/str}}">{{url}}</a>
+    </div>
+</div>
