@@ -29,3 +29,4 @@ npm-debug.log
 
 # Configs locais
 config.php
+local/edukativa_apis/observer/config.php

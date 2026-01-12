@@ -12,6 +12,13 @@ pipeline {
         APP_PORT = '8008'
         APP_PORT_ALT = '8009'
         MOODLEDATA_PATH = '/var/www/cognus.edukativa.com.br/moodle-data'
+        
+        // Moodle Database Configuration (usando credenciais do Jenkins)
+        MOODLE_DB_HOST = credentials('MOODLE_COGNUS_DB_HOST')
+        MOODLE_DB_NAME = credentials('MOODLE_COGNUS_DB_NAME')
+        MOODLE_DB_USER = credentials('MOODLE_COGNUS_DB_USER')
+        MOODLE_DB_PASS = credentials('MOODLE_COGNUS_DB_PASSWORD')
+        MOODLE_URL = credentials('MOODLE_COGNUS_URL')
     }
 
     stages {
@@ -96,6 +103,13 @@ pipeline {
                             --restart unless-stopped \\
                             -p ${port}:80 \\
                             -v ${MOODLEDATA_PATH}:/var/www/moodledata \\
+                            -e MOODLE_DB_TYPE=mysqli \\
+                            -e MOODLE_DB_HOST=${MOODLE_DB_HOST} \\
+                            -e MOODLE_DB_NAME=${MOODLE_DB_NAME} \\
+                            -e MOODLE_DB_USER=${MOODLE_DB_USER} \\
+                            -e MOODLE_DB_PASS=${MOODLE_DB_PASS} \\
+                            -e MOODLE_DB_PREFIX=mdl_ \\
+                            -e MOODLE_URL=${MOODLE_URL} \\
                             ${DOCKER_IMAGE}:latest
                     """
                     

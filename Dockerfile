@@ -53,6 +53,10 @@ RUN { \
 # Copiar código do Moodle para o container
 COPY . /var/www/html/
 
+# Copiar e configurar entrypoint
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # Criar diretório para moodledata (será montado como volume)
 RUN mkdir -p /var/www/moodledata && \
     chown -R www-data:www-data /var/www/moodledata
@@ -70,5 +74,5 @@ EXPOSE 80
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD curl -f http://localhost/ || exit 1
 
-# Iniciar Apache
-CMD ["apache2-foreground"]
+# Usar entrypoint customizado
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
