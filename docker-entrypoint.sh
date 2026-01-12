@@ -75,12 +75,19 @@ echo -e "${GREEN}[Moodle Container] moodledata directory is ready${NC}"
 
 echo -e "${GREEN}[Moodle Container] Initialization complete. Starting Apache...${NC}"
 
-# Configurar porta do Apache se variável PORT estiver definida
-if [ ! -z "$PORT" ]; then
-    echo -e "${YELLOW}[Moodle Container] Configuring Apache to listen on port ${PORT}...${NC}"
-    sed -i "s/Listen 80/Listen $PORT/" /etc/apache2/ports.conf
-    sed -i "s/:80>/:$PORT>/" /etc/apache2/sites-available/000-default.conf
-fi
+# Configurar porta do Apache
+PORT=${PORT:-8008}
+echo -e "${YELLOW}[Moodle Container] Configuring Apache to listen on port ${PORT}...${NC}"
+
+# Atualizar configuração do Apache para usar apenas a porta especificada
+sed -i "s/Listen 80/Listen ${PORT}/" /etc/apache2/ports.conf
+sed -i "s/Listen 443/#Listen 443/" /etc/apache2/ports.conf || true
+sed -i "s/<VirtualHost \*:80>/<VirtualHost *:${PORT}>/" /etc/apache2/sites-available/000-default.conf
+
+# Desabilitar qualquer config SSL que possa existir
+rm -f /etc/apache2/sites-enabled/default-ssl.conf || true
+
+echo -e "${GREEN}[Moodle Container] Apache configured to listen on port ${PORT}${NC}"
 
 # Executar o comando original do Apache
 exec apache2-foreground

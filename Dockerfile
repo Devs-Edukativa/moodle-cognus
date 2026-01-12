@@ -32,16 +32,10 @@ RUN docker-php-ext-configure gd --with-jpeg \
     opcache \
     exif
 
-# Configurar Apache para suportar variável de ambiente PORT
-RUN a2enmod rewrite expires headers ssl
-
-# Script para usar porta dinâmica do ambiente
-RUN echo '#!/bin/bash\n\
-PORT=${PORT:-80}\n\
-sed -i "s/Listen 80/Listen $PORT/" /etc/apache2/ports.conf\n\
-sed -i "s/:80>/:$PORT>/" /etc/apache2/sites-available/000-default.conf\n\
-exec apache2-foreground' > /usr/local/bin/apache-with-port.sh && \
-chmod +x /usr/local/bin/apache-with-port.sh
+# Configurar Apache para usar apenas HTTP (Nginx cuida do SSL)
+RUN a2enmod rewrite expires headers && \
+    a2dismod ssl && \
+    a2dissite default-ssl || true
 
 # Configurar PHP para Moodle
 RUN { \
