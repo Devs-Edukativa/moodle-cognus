@@ -96,20 +96,21 @@ pipeline {
                         fi
                     """
                     
-                    // Iniciar container
+                    // Iniciar container com network host (permite acesso direto ao MySQL local)
                     sh """
                         sudo docker run -d \\
                             --name moodle-cognus \\
                             --restart unless-stopped \\
-                            -p ${port}:80 \\
+                            --network host \\
                             -v ${MOODLEDATA_PATH}:/var/www/moodledata \\
                             -e MOODLE_DB_TYPE=mysqli \\
-                            -e MOODLE_DB_HOST=${MOODLE_DB_HOST} \\
+                            -e MOODLE_DB_HOST=localhost \\
                             -e MOODLE_DB_NAME=${MOODLE_DB_NAME} \\
                             -e MOODLE_DB_USER=${MOODLE_DB_USER} \\
                             -e MOODLE_DB_PASS=${MOODLE_DB_PASS} \\
                             -e MOODLE_DB_PREFIX=mdl_ \\
                             -e MOODLE_URL=${MOODLE_URL} \\
+                            -e PORT=${port} \\
                             ${DOCKER_IMAGE}:latest
                     """
                     

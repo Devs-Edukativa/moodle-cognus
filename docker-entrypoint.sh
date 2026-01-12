@@ -54,7 +54,33 @@ else
     echo -e "${GREEN}[Moodle Container] config.php already exists${NC}"
 fi
 
+echo -e "${YELLOW}[Moodle Container] Setting permissions...${NC}"
+
+# Ajustar permissões
+chown -R www-data:www-data /var/www/html
+chown -R www-data:www-data /var/www/moodledata
+
+echo -e "${GREEN}[Moodle Container] Permissions set${NC}"
+
+echo -e "${YELLOW}[Moodle Container] Checking moodledata directory...${NC}"
+
+# Verificar se moodledata tem as pastas necessárias
+if [ ! -d /var/www/moodledata/cache ]; then
+    echo -e "${YELLOW}[Moodle Container] Creating moodledata structure...${NC}"
+    mkdir -p /var/www/moodledata/{cache,localcache,sessions,temp,trashdir}
+    chown -R www-data:www-data /var/www/moodledata
+fi
+
+echo -e "${GREEN}[Moodle Container] moodledata directory is ready${NC}"
+
 echo -e "${GREEN}[Moodle Container] Initialization complete. Starting Apache...${NC}"
+
+# Configurar porta do Apache se variável PORT estiver definida
+if [ ! -z "$PORT" ]; then
+    echo -e "${YELLOW}[Moodle Container] Configuring Apache to listen on port ${PORT}...${NC}"
+    sed -i "s/Listen 80/Listen $PORT/" /etc/apache2/ports.conf
+    sed -i "s/:80>/:$PORT>/" /etc/apache2/sites-available/000-default.conf
+fi
 
 # Executar o comando original do Apache
 exec apache2-foreground
