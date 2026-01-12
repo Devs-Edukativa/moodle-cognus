@@ -1,0 +1,31 @@
+# Docker
+.git/
+.github/
+.vscode/
+*.log
+*.bak
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Arquivos binários que podem causar conflito de arquitetura
+**/*.so
+**/*.o
+**/*.a
+**/*.dylib
+
+# Documentação e configs
+README.md
+LICENSE
+*.md
+docker-compose.yml
+.dockerignore
+
+# Node modules e cache (se houver)
+node_modules/
+npm-debug.log
+
+# Configs locais
+config.php
