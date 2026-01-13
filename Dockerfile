@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     libonig-dev \
     libldap2-dev \
+    libgmp-dev \
     ghostscript \
     git \
     unzip \
@@ -21,6 +22,7 @@ RUN apt-get update && apt-get install -y \
 
 # Configurar e instalar extensões PHP necessárias para o Moodle
 RUN docker-php-ext-configure gd --with-jpeg \
+    && docker-php-ext-configure ldap --with-libdir=lib/$(gcc -dumpmachine) \
     && docker-php-ext-install -j$(nproc) \
     gd \
     mysqli \
@@ -30,19 +32,22 @@ RUN docker-php-ext-configure gd --with-jpeg \
     zip \
     intl \
     opcache \
-    exif
+    exif \
+    ldap \
+    bcmath \
+    gmp
 
 # Configurar Apache para usar apenas HTTP (Nginx cuida do SSL)
 RUN a2enmod rewrite expires headers && \
     a2dismod ssl && \
     a2dissite default-ssl || true
 
-# Configurar PHP para Moodle
+# Configurar PHP para Moodle (valores mais conservadores baseados na referência)
 RUN { \
-    echo 'memory_limit = 4G'; \
-    echo 'upload_max_filesize = 10G'; \
-    echo 'post_max_size = 10G'; \
-    echo 'max_execution_time = 300'; \
+    echo 'memory_limit = 1024M'; \
+    echo 'upload_max_filesize = 64M'; \
+    echo 'post_max_size = 64M'; \
+    echo 'max_execution_time = 360'; \
     echo 'max_input_vars = 5000'; \
     echo 'opcache.enable = 1'; \
     echo 'opcache.memory_consumption = 128'; \
@@ -59,9 +64,11 @@ COPY . /var/www/html/
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# Criar diretório para moodledata (será montado como volume)
+# Criar diretórios necessários (moodledata será montado como volume)
 RUN mkdir -p /var/www/moodledata && \
-    chown -R www-data:www-data /var/www/moodledata
+    mkdir -p /var/www/cognus.edukativa.com.br/moodle-data && \
+    chown -R www-data:www-data /var/www/moodledata && \
+    chown -R www-data:www-data /var/www/cognus.edukativa.com.br/moodle-data
 
 # Ajustar permissões do código
 RUN chown -R www-data:www-data /var/www/html
