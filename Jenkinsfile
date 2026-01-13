@@ -33,7 +33,6 @@ pipeline {
             agent any
             environment {
                 SONAR_SCANNER_OPTS = "-Dsonar.scanner.socketTimeout=600 -Dsonar.scanner.responseTimeout=600"
-                SONAR_LOGIN = credentials('sonar-api-token')
             }
             when {
                 not {
@@ -43,21 +42,6 @@ pipeline {
             steps {
                 script {
                     echo "🔍 Running SonarQube Analysis..."
-                    
-                    // Create or update sonar-project.properties
-                    sh '''
-                        cat > sonar-project.properties << 'SONAR_EOF'
-sonar.projectKey=Devs-Edukativa_moodle-cognus_7f2e4b1c-3a5d-4e8f-9b1a-2c6d5f3a8e2b
-sonar.projectName=moodle-cognus
-sonar.projectVersion=1.0
-sonar.sources=.
-sonar.sourceEncoding=UTF-8
-sonar.exclusions=**/node_modules/**,**/.next/**,**/dist/**,**/coverage/**,**/tests/**,**/vendor/**,**/cache/**,**/temp/**,**/install/**,**/upgrade/**,**/.git/**,**/mysql-config/**,**/userpix/**,**/pix/**
-sonar.scanner.socketTimeout=600
-sonar.scanner.responseTimeout=600
-sonar.scm.disabled=true
-SONAR_EOF
-                    '''
                     
                     def scannerHome = tool 'SonarScanner'
                     withSonarQubeEnv('SonarQube') {
