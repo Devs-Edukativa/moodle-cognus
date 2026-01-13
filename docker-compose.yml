@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: mysql-cognus
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: Avanteb.2025
+      MYSQL_DATABASE: cognus
+      MYSQL_USER: cognus
+      MYSQL_PASSWORD: Avanteb.2025
+      TZ: America/Sao_Paulo
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql-config:/etc/mysql/conf.d
+      - /var/backups/mysql:/backups
+    command: 
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --max_allowed_packet=256M
+      - --innodb_buffer_pool_size=2G
+      - --innodb_log_file_size=512M
+      - --innodb_flush_log_at_trx_commit=2
+      - --innodb_flush_method=O_DIRECT
+      - --max_connections=500
+      - --table_open_cache=4000
+      - --sort_buffer_size=4M
+      - --read_buffer_size=2M
+      - --read_rnd_buffer_size=8M
+      - --join_buffer_size=2M
+      - --thread_cache_size=100
+      - --mysql-native-password=ON
+    networks:
+      - moodle-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pAvanteb.2025"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  moodle-network:
+    driver: bridge

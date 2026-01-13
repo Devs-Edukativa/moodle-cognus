@@ -6,7 +6,7 @@ $CFG = new stdClass();
 
 $CFG->dbtype    = 'mysqli';
 $CFG->dblibrary = 'native';
-$CFG->dbhost    = '172.31.27.76';
+$CFG->dbhost    = '127.0.0.1';
 $CFG->dbname    = 'cognus';
 $CFG->dbuser    = 'cognus';
 $CFG->dbpass    = 'Avanteb.2025';

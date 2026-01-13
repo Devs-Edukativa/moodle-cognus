@@ -59,3 +59,7 @@ phpcs.xml
 jsconfig.json
 UPGRADING-CURRENT.md
 .phpunit.cache
+
+# Docker MySQL
+mysql-config/*.log
+DOCKER-MYSQL.md
