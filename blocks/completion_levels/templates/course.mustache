@@ -1,0 +1,111 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template block_completion_levels/course
+
+    Classes required for JS:
+    * none
+
+    Data attributes required for JS:
+    * none
+
+    Context variables required for this template:
+    * noactivitiestracked Whether a message saying that no activity is tracked should be displayed
+    * badge Badge context (see block_completion_levels/badge)
+    * progressbar Progress bar context (see block_completion_levels/progressbar)
+    * showlinks Whether to show links to overview and details
+    * links Needed only if showlinks is true
+      * identifier Identifier of the link, a name of a picture and a page (e.g. details, overview)
+      * name Localized string
+    * instanceid Block instance ID
+    * courseid Course ID
+    * walloffame Optional walloffame context (see block_completion_levels/walloffame)
+
+    Example context (json):
+    {
+        "noactivitiestracked": false,
+        "badge": {
+            "isdefault": true,
+            "imgurl": "/blocks/completion_levels/pix/default/10.png",
+            "level": 10,
+            "additionalclasses": ""
+        },
+        "progressbar": {
+            "percentage": 100,
+            "text": "100%"
+        },
+        "showlinks": true,
+        "links": [
+            {
+                "identifier": "overview",
+                "name": "Overview"
+            },
+            {
+                "identifier": "details",
+                "name": "Details"
+            }
+        ],
+        "instanceid": 1,
+        "courseid": 2,
+        "walloffame": {
+            "groupname": "(Group 1)",
+            "users": [
+                {
+                    "i": "1)",
+                    "progress": "100%",
+                    "name": "Student 1",
+                    "currentuser": false
+                },
+                {
+                    "i": "2)",
+                    "progress": "90%",
+                    "name": "Student 2",
+                    "currentuser": false
+                },
+                {
+                    "i": "3)",
+                    "progress": "50%",
+                    "name": "Student 3",
+                    "currentuser": true
+                }
+            ]
+        }
+    }
+}}
+{{# noactivitiestrackedmessage}}
+<div>
+	{{# pix}} info, block_completion_levels, {{# str}} info, moodle {{/ str}} {{/ pix}}
+	{{# str}} noactivitiestracked, block_completion_levels {{/ str}}
+</div>
+{{/ noactivitiestrackedmessage}}
+{{# badge}} {{> block_completion_levels/badge}} {{/ badge}}
+{{# progressbar}} {{> block_completion_levels/progressbar}} {{/ progressbar}}
+{{# showlinks}}
+<div class="overview-buttons text-center mt-2">
+	{{# links}}
+	<a href="{{{config.wwwroot}}}/blocks/completion_levels/{{identifier}}.php?instanceid={{instanceid}}&courseid={{courseid}}" class="font-weight-bold text-decoration-none">
+		<span class="link-icon align-top">{{# pix}} {{identifier}}, block_completion_levels, {{/ pix}}</span>{{name}}
+	</a>
+	{{/ links}}
+</div>
+{{/ showlinks}}
+{{# badge}}
+<div class="d-flex justify-content-center mt-2">
+	<a href="{{{config.wwwroot}}}/blocks/completion_levels/student_overview.php?instanceid={{instanceid}}&courseid={{courseid}}" class="btn btn-secondary">{{# str}} viewprogress, block_completion_levels {{/ str}}</a>
+</div>
+{{/ badge}}
+{{# walloffame}} {{> block_completion_levels/walloffame}} {{/ walloffame}}

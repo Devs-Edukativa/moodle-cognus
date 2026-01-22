@@ -1,0 +1,93 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template block_completion_levels/dashboard
+
+    Classes required for JS:
+    * none
+
+    Data attributes required for JS:
+    * none
+
+    Context variables required for this template:
+    * courses List of courses with completion levels blocks
+      * courseid Course ID
+      * fullname Course full name
+      * badges List of completion levels blocks in this course
+        * title Block title
+        * instanceid Block instance id
+        * badge Badge context (see block_completion_levels/badge)
+        * progressbar Progress bar context (see block_completion_levels/progressbar)
+    * rawcontent Text to display directly
+
+    Example context (json):
+    {
+        "courses": [
+            {
+                "courseid": 2,
+                "fullname": "Course 1",
+                "badges": [
+                    {
+                        "title": "Completion Levels 1",
+                        "instanceid": 1,
+                        "badge": {
+                            "isdefault": true,
+                            "imgurl": "/blocks/completion_levels/pix/default/10.png",
+                            "level": 10,
+                            "additionalclasses": ""
+                        },
+                        "progressbar": {
+                            "percentage": 100,
+                            "text": "100%"
+                        }
+                    },
+                    {
+                        "title": "Completion Levels 2",
+                        "instanceid": 2,
+                        "badge": {
+                            "isdefault": true,
+                            "imgurl": "/blocks/completion_levels/pix/default/4.png",
+                            "level": 4,
+                            "additionalclasses": ""
+                        },
+                        "progressbar": {
+                            "percentage": 40,
+                            "text": "40%"
+                        }
+                    }
+                ]
+            }
+        ],
+        "rawcontent": ""
+    }
+}}
+{{# courses}}
+	<hr>
+	<h4 class="mb-3"><a href="{{{config.wwwroot}}}/course/view.php?id={{courseid}}" class="text-nowrap">{{# str}} coursetitle, moodle, { "course": {{# quote}} {{fullname}} {{/ quote}} } {{/ str}}</a></h4>
+	<div class="course-badges">
+	{{# badges}}
+		<h5 class="d-inline-block mr-3">{{title}}</h5>
+		<a href="{{{config.wwwroot}}}/blocks/completion_levels/student_overview.php?instanceid={{instanceid}}&courseid={{courseid}}" class="text-nowrap">{{# str}} viewprogress, block_completion_levels {{/ str}}</a>
+		<div class="badge-progress-compact">
+			{{# badge}} {{> block_completion_levels/badge}} {{/ badge}}
+			{{# progressbar}} {{> block_completion_levels/progressbar}} {{/ progressbar}}
+		</div>
+		<hr>
+	{{/ badges}}
+	</div>
+{{/ courses}}
+{{{rawcontent}}}

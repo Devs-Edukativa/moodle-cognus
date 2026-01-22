@@ -1,0 +1,229 @@
+.block.block_completion_levels .block_completion_levels-badge {
+    display: block;
+    margin: 10px auto;
+    width: 150px;
+    height: 150px;
+    font-size: 5.4em;
+}
+
+.block.block_completion_levels .course-badges hr:last-of-type {
+    display: none;
+}
+
+.block_completion_levels .block_completion_levels-overview .block_completion_levels-badge {
+    width: 75px;
+    height: 75px;
+    font-size: 2.7em;
+}
+
+.block_completion_levels .block_completion_levels-badge.block_completion_levels-badge-default {
+    line-height: 2em;
+    background-size: 100%;
+    user-select: none;
+    color: white;
+}
+
+.block_completion_levels .block_completion_levels-badge.block_completion_levels-badge-small {
+    width: 2em;
+    height: 2em;
+    line-height: 2.15em;
+    position: absolute;
+    left: -2em;
+    top: -1.4em;
+    max-width: unset;
+}
+
+.block_completion_levels .block_completion_levels-badge-small-container {
+    display: inline-block;
+    position: relative;
+    margin-right: 1em;
+}
+
+.block_completion_levels .block_completion_levels-badge-default.block_completion_levels-badge-2digits,
+.block_completion_levels .block_completion_levels-badge-default.block_completion_levels-badge-3digits {
+    line-height: 1.81em;
+}
+
+.block_completion_levels .block_completion_levels-badge-default.block_completion_levels-badge-small.block_completion_levels-badge-2digits,
+.block_completion_levels .block_completion_levels-badge-default.block_completion_levels-badge-small.block_completion_levels-badge-3digits {
+    line-height: 2em;
+}
+
+.block_completion_levels .block_completion_levels-badge-default.block_completion_levels-badge-2digits > * {
+    font-size: .9em;
+    line-height: 2.22em;
+}
+
+.block_completion_levels .block_completion_levels-badge-default.block_completion_levels-badge-3digits > * {
+    font-size: .7em;
+    line-height: 2.6em;
+}
+
+.block.block_completion_levels .badge-progress-compact {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    grid-gap: 1em;
+}
+
+.block.block_completion_levels .badge-progress-compact .block_completion_levels-badge {
+    font-size: 30px;
+    width: 2em;
+    height: 2em;
+}
+
+.block_completion_levels-bar {
+    background-color: #ccc;
+    height: 25px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.block_completion_levels-bar .completion-bar {
+    background-color: green;
+    border-radius: inherit;
+    height: inherit;
+    position: absolute;
+}
+
+.block_completion_levels-bar .completion-display {
+    line-height: 25px;
+    color: white;
+    font-size: 11px;
+    position: relative;
+}
+
+.block_completion_levels .link-icon img {
+    width: auto;
+    height: auto;
+}
+
+.block_completion_levels .ranking-ellipsis {
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+    display: inline-block;
+    font-size: 80%;
+}
+
+.block_completion_levels .block_completion_levels-text-small {
+    font-size: 80%;
+}
+
+table.block-completion_levels-details .activity-name-table-header {
+    -webkit-transform: translate(-.4em, .6em) rotate(-45deg);
+    transform: translate(-.4em, .6em) rotate(-45deg);
+    transform-origin: 0 0;
+    width: 2.5em;
+}
+
+table.block-completion_levels-details .activity-name-table-header div {
+    width: 9em;
+}
+
+table.block-completion_levels-details .weight-indicator {
+    font-size: small;
+    white-space: nowrap;
+}
+
+table.block-completion_levels-details th {
+    height: 9em;
+}
+
+.block_completion_levels .overview-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.block_completion_levels .progress-over-separator {
+    padding: 0 .2em;
+}
+
+.block_completion_levels.wall-of-fame .progress-over-separator {
+    padding: 0 .1em;
+}
+
+.block_completion_levels.wall-of-fame {
+    display: grid;
+    grid-template-columns: fit-content(100%) fit-content(100%) 1fr;
+    grid-column-gap: .4em;
+}
+
+.block_completion_levels .wall-of-fame-logo img {
+    width: auto;
+    height: auto;
+    margin-right: .3em;
+    vertical-align: middle;
+}
+
+.activityinstance .block_completion_levels-required-activity-marker,
+.activity-instance .block_completion_levels-required-activity-marker {
+    color: goldenrod;
+    font-size: 50%;
+    text-indent: 0;
+    padding: .5em 0 0 .5em;
+    vertical-align: top;
+}
+
+.activity-instance .block_completion_levels-required-activity-marker {
+    padding: .5em .5em 0 0;
+    z-index: 2;
+    position: relative;
+}
+
+.block_completion_levels .pix-preview {
+    width: 25px;
+    font-size: 15px;
+    display: inline-block;
+}
+
+.block_completion_levels .pixselectgroup {
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(2, auto);
+}
+
+/* Some adjustments for More/Clean themes */
+.block_completion_levels .pixselectgroup + #fgroup_id_pixselectgroup fieldset > span {
+    display: block;
+    line-height: 35px;
+}
+
+.block_completion_levels .fcontainer > .pixselectgroup {
+    position: relative;
+    grid-template-columns: repeat(1, auto);
+    top: 5px;
+}
+
+.block_completion_levels .fcontainer > .pixselectgroup > * {
+    position: absolute;
+    left: 400px;
+    overflow: auto;
+    white-space: nowrap;
+}
+
+.block_completion_levels .fcontainer > .pixselectgroup > :nth-child(2) {
+    top: 40px;
+}
+
+.block_completion_levels .pixselectgroup + #fgroup_id_pixselectgroup #id_config_levels {
+    margin-left: 80px;
+}
+
+.block_completion_levels .fcontainer > .pixselectgroup > :nth-child(3) {
+    top: 80px;
+}
+
+.block_completion_levels .fcontainer > .pixselectgroup > :nth-child(4) {
+    top: 120px;
+}
+
+.block_completion_levels .mobile-app-table table {
+    border-spacing: 10px;
+    border-collapse: separate;
+}
+
+.block_completion_levels .mobile-redirection-link {
+    font-size: .75em;
+    vertical-align: super;
+    margin-left: .5em;
+}

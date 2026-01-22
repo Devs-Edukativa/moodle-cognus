@@ -50,7 +50,8 @@
                 "items": []
             }
         ],
-        "showfullnameinusermenu": true
+        "showfullnameinusermenu": true,
+        "loginlinkbuttonenabled": true
     }
 }}
 {{!
@@ -62,6 +63,7 @@
     * Add user full name at the top of the user menu.
     * Support submenus with more than one level (for adding smart menus into the user menu).
     * Make submenu headers fully clickable as soon as at least one smart menu exists on the page.
+    * Set the submenus' data-bs-theme attribute to light even if the navbar is dark
 }}
 <div class="usermenu">
     {{#unauthenticateduser}}
@@ -71,19 +73,19 @@
                 <div class="divider border-start h-75 align-self-center mx-2"></div>
             {{/guest}}
             {{#url}}
-                <a href="{{url}}">{{#str}} login, core {{/str}}</a>
+                <a href="{{url}}"{{#loginlinkbuttonenabled}} class="btn btn-primary"{{/loginlinkbuttonenabled}}>{{#str}} login, core {{/str}}</a>
             {{/url}}
         </span>
     {{/unauthenticateduser}}
     {{^unauthenticateduser}}
         <div class="dropdown show">
-            <a href="#" role="button" id="user-menu-toggle" data-toggle="dropdown" aria-label="{{#str}}usermenu{{/str}}"
+            <a href="#" role="button" id="user-menu-toggle" data-bs-toggle="dropdown" aria-label="{{#str}}usermenu{{/str}}"
                aria-haspopup="true" aria-controls="user-action-menu" class="btn dropdown-toggle">
                 <span class="userbutton">
                     {{> core/user_menu_metadata }}
                 </span>
             </a>
-            <div id="user-action-menu" class="dropdown-menu dropdown-menu-right">
+            <div id="user-action-menu" class="dropdown-menu dropdown-menu-end" data-bs-theme="light">
                 <div id="usermenu-carousel" class="carousel slide" data-touch="false" data-interval="false" data-keyboard="false">
                     <div class="carousel-inner">
                         <div id="carousel-item-main" class="carousel-item active" role="menu" tabindex="-1" aria-label="{{#str}}user{{/str}}">

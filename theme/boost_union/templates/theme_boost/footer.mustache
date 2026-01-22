@@ -113,18 +113,18 @@
 <footer id="page-footer" class="footer-popover bg-white">
     <div data-region="footer-container-popover">
         {{#output.has_communication_links}}
-            <button onclick="window.open('{{output.communication_url}}', '_blank', 'noreferrer')" class="btn btn-icon bg-primary text-white icon-no-margin btn-footer-communication" aria-label="{{#str}}communicationroomlink, course{{/str}}">
+            <button onclick="window.open('{{output.communication_url}}', '_blank', 'noreferrer')" class="btn btn-icon rounded-circle bg-primary text-white btn-footer-communication" aria-label="{{#str}}communicationroomlink, course{{/str}}">
                 {{#pix}}t/messages-o, core{{/pix}}
             </button>
         {{/output.has_communication_links}}
         {{#footerbutton }}
-            <button class="btn btn-icon bg-secondary icon-no-margin btn-footer-popover" data-action="footer-popover" aria-label="{{#str}}showfooter, theme_boost{{/str}}">
+            <button class="btn btn-icon rounded-circle bg-secondary btn-footer-popover" data-action="footer-popover" aria-label="{{#str}}showfooter, theme_boost{{/str}}">
                 {{#pix}}e/question, core{{/pix}}
             </button>
         {{/footerbutton }}
         <div id="boost-union-footer-buttons">
             {{#accessibilitybutton}}
-                <a id="btn-accessibility-support" class="btn btn-icon bg-secondary icon-no-margin d-print-none" href="{{accessibilitybuttonlink}}" aria-label="{{accessibilitybuttonsrlinktitle}}">
+                <a id="btn-accessibility-support" class="btn btn-icon rounded-circle bg-secondary d-print-none" href="{{accessibilitybuttonlink}}" aria-label="{{accessibilitybuttonsrlinktitle}}">
                     <i class="icon fa fa-universal-access fa-fw" aria-hidden="true"></i>
                 </a>
             {{/accessibilitybutton}}
@@ -267,6 +267,7 @@
         </div>
     {{/footerbutton }}
     {{^footerbutton }}
+        {{{ output.standard_end_of_body_html_additionalhtmlfooter }}}
         {{{ output.standard_end_of_body_html_endtoken }}}
     {{/footerbutton }}
 

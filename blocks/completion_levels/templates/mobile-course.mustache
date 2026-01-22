@@ -1,0 +1,95 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template block_completion_levels/mobile-course
+
+    Classes required for JS:
+    * none
+
+    Data attributes required for JS:
+    * none
+
+    Context variables required for this template:
+    * title The block title
+    * noactivitiestrackedmessage Whether a message saying that no activity is tracked should be displayed
+    * badge Badge context (see block_completion_levels/badge)
+    * progressbar Progress bar context (see block_completion_levels/progressbar)
+    * showlinks Whether to show links to overview and details
+    * links Needed only if showlinks is true
+      * url URL to direct to
+      * img Image source to display with the link
+      * name Localized string
+    * instanceid Block instance ID
+    * courseid Course ID
+    * walloffame Optional walloffame context (see block_completion_levels/walloffame)
+
+    Example context (json):
+    {
+        "title": "Completion Levels",
+        "noactivitiestrackedmessage": false,
+        "badge": {
+            "isdefault": true,
+            "imgurl": "/blocks/completion_levels/pix/default/10.png",
+            "level": 10,
+            "additionalclasses": ""
+        },
+        "progressbar": {
+            "percentage": 100,
+            "text": "100%"
+        },
+        "instanceid": 1,
+        "courseid": 2,
+        "walloffame": {
+            "groupname": "(Group 1)",
+            "users": [
+                {
+                    "i": "1)",
+                    "progress": "100%",
+                    "name": "Student 1",
+                    "currentuser": false
+                },
+                {
+                    "i": "2)",
+                    "progress": "90%",
+                    "name": "Student 2",
+                    "currentuser": false
+                },
+                {
+                    "i": "3)",
+                    "progress": "50%",
+                    "name": "Student 3",
+                    "currentuser": true
+                }
+            ]
+        }
+    }
+}}
+{{# title}}<h4 style="margin-left:.5em">{{.}}</h4>{{/ title}}
+{{# noactivitiestrackedmessage}}
+<div>
+	<ion-icon name="fa-circle-info" color="info" aria-label="{{# str}} info, moodle {{/ str}}"></ion-icon>
+	{{# str}} noactivitiestracked, block_completion_levels {{/ str}}
+</div>
+{{/ noactivitiestrackedmessage}}
+{{# badge}} {{> block_completion_levels/badge}} {{/ badge}}
+{{# progressbar}} {{> block_completion_levels/progressbar}} {{/ progressbar}}
+{{# badge}}
+<div style="display:flex;justify-content:center;margin-top:.5em">
+	<ion-button color="secondary" core-site-plugins-new-content component="block_completion_levels" method="student_overview" [args]="{instanceid: {{instanceid}}, courseid: {{courseid}} }">{{# str}} viewprogress, block_completion_levels {{/ str}}</ion-button>
+</div>
+{{/ badge}}
+{{# walloffame}} {{> block_completion_levels/walloffame}} {{/ walloffame}}

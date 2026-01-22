@@ -30,7 +30,7 @@ Feature: Configuring the theme_boost_union plugin on the "Flavours" page, applyi
     And I set the field "Title" to "My shiny new flavour"
     And I upload "theme/boost_union/tests/fixtures/flavourlogo.png" file to "Compact logo" filemanager
     And I click on "Save changes" "button"
-    And I should see "Flavours" in the "#region-main h2" "css_element"
+    And I should see "Flavours" in the ".admin_settingspage_tabs_with_tertiary .dropdown-toggle" "css_element"
     And I click on ".action-preview" "css_element" in the "My shiny new flavour" "table_row"
     # We can't check the uploaded image file visually, but we can verify that the compact logo is shipped from the theme_boost_union flavour filearea.
     Then "//nav[contains(@class, 'navbar')]//img[contains(@class, 'logo')][contains(@src, 'pluginfile.php/1/theme_boost_union/flavours_look_logocompact')][contains(@src, 'flavourlogo.png')]" "xpath_element" should exist
@@ -50,7 +50,7 @@ Feature: Configuring the theme_boost_union plugin on the "Flavours" page, applyi
     And I set the field "Title" to "My shiny new flavour"
     And I upload "theme/boost_union/tests/fixtures/flavourlogo.png" file to "Compact logo" filemanager
     And I click on "Save changes" "button"
-    And I should see "Flavours" in the "#region-main h2" "css_element"
+    And I should see "Flavours" in the ".admin_settingspage_tabs_with_tertiary .dropdown-toggle" "css_element"
     And I click on ".action-preview" "css_element" in the "My shiny new flavour" "table_row"
     # We can't check the uploaded image file visually, but we can verify that the compact logo is shipped from the theme_boost_union flavour filearea.
     Then "//nav[contains(@class, 'navbar')]//img[contains(@class, 'logo')][contains(@src, 'pluginfile.php/1/theme_boost_union/flavours_look_logocompact')][contains(@src, 'flavourlogo.png')]" "xpath_element" should exist
@@ -69,10 +69,36 @@ Feature: Configuring the theme_boost_union plugin on the "Flavours" page, applyi
     And I should see "Create flavour" in the "#page-header h1" "css_element"
     And I set the field "Title" to "My shiny new flavour"
     And I click on "Save changes" "button"
-    And I should see "Flavours" in the "#region-main h2" "css_element"
+    And I should see "Flavours" in the ".admin_settingspage_tabs_with_tertiary .dropdown-toggle" "css_element"
     And I click on ".action-preview" "css_element" in the "My shiny new flavour" "table_row"
     # We can't check the uploaded image file visually, but we can verify that the compact logo is shipped from the theme_boost_union global logo filearea.
     Then "//nav[contains(@class, 'navbar')]//img[contains(@class, 'logo')][contains(@src, 'pluginfile.php/1/theme_boost_union/logocompact')][contains(@src, 'moodlelogo.png')]" "xpath_element" should exist
+
+  @javascript @_file_upload
+  Scenario: Setting: Compact logo - Upload a PNG compact logo and check that it is resized on the server-side
+    When I log in as "admin"
+    And I navigate to "Appearance > Boost Union > Flavours" in site administration
+    And I click on "Create flavour" "button"
+    And I should see "Create flavour" in the "#page-header h1" "css_element"
+    And I set the field "Title" to "My shiny new flavour"
+    And I upload "theme/boost_union/tests/fixtures/flavourlogo.png" file to "Compact logo" filemanager
+    And I click on "Save changes" "button"
+    And I should see "Flavours" in the ".admin_settingspage_tabs_with_tertiary .dropdown-toggle" "css_element"
+    And I click on ".action-preview" "css_element" in the "My shiny new flavour" "table_row"
+    Then "//nav[contains(@class, 'navbar')]//img[contains(@class, 'logo')][contains(@src, 'pluginfile.php/1/theme_boost_union/flavours_look_logocompact/')][contains(@src, '/300x300/')][contains(@src, 'flavourlogo.png')]" "xpath_element" should exist
+
+  @javascript @_file_upload
+  Scenario: Setting: Compact logo - Upload a SVG compact logo and check that it is not resized on the server-side
+    When I log in as "admin"
+    And I navigate to "Appearance > Boost Union > Flavours" in site administration
+    And I click on "Create flavour" "button"
+    And I should see "Create flavour" in the "#page-header h1" "css_element"
+    And I set the field "Title" to "My shiny new flavour"
+    And I upload "theme/boost_union/tests/fixtures/flavourlogo.svg" file to "Compact logo" filemanager
+    And I click on "Save changes" "button"
+    And I should see "Flavours" in the ".admin_settingspage_tabs_with_tertiary .dropdown-toggle" "css_element"
+    And I click on ".action-preview" "css_element" in the "My shiny new flavour" "table_row"
+    Then "//nav[contains(@class, 'navbar')]//img[contains(@class, 'logo')][contains(@src, 'pluginfile.php/1/theme_boost_union/flavours_look_logocompact/')][contains(@src, '/1/')][contains(@src, 'flavourlogo.svg')]" "xpath_element" should exist
 
   @javascript @_file_upload
   Scenario: Flavours: Favicon - Upload a favicon (with a global favicon not having been uploaded before)
@@ -83,7 +109,7 @@ Feature: Configuring the theme_boost_union plugin on the "Flavours" page, applyi
     And I set the field "Title" to "My shiny new flavour"
     And I upload "theme/boost_union/tests/fixtures/flavourfavicon.ico" file to "Favicon" filemanager
     And I click on "Save changes" "button"
-    And I should see "Flavours" in the "#region-main h2" "css_element"
+    And I should see "Flavours" in the ".admin_settingspage_tabs_with_tertiary .dropdown-toggle" "css_element"
     And I click on ".action-preview" "css_element" in the "My shiny new flavour" "table_row"
     # We can't check the uploaded image file visually, but we can verify that the favicon is shipped from the theme_boost_union flavour filearea.
     Then "//head//link[contains(@rel, 'shortcut')][contains(@href, 'pluginfile.php/1/theme_boost_union/flavours_look_favicon')][contains(@href, 'flavourfavicon.ico')]" "xpath_element" should exist
@@ -103,7 +129,7 @@ Feature: Configuring the theme_boost_union plugin on the "Flavours" page, applyi
     And I set the field "Title" to "My shiny new flavour"
     And I upload "theme/boost_union/tests/fixtures/flavourfavicon.ico" file to "Favicon" filemanager
     And I click on "Save changes" "button"
-    And I should see "Flavours" in the "#region-main h2" "css_element"
+    And I should see "Flavours" in the ".admin_settingspage_tabs_with_tertiary .dropdown-toggle" "css_element"
     And I click on ".action-preview" "css_element" in the "My shiny new flavour" "table_row"
     # We can't check the uploaded image file visually, but we can verify that the favicon is shipped from the theme_boost_union flavour filearea.
     Then "//head//link[contains(@rel, 'shortcut')][contains(@href, 'pluginfile.php/1/theme_boost_union/flavours_look_favicon')][contains(@href, 'flavourfavicon.ico')]" "xpath_element" should exist
@@ -122,7 +148,7 @@ Feature: Configuring the theme_boost_union plugin on the "Flavours" page, applyi
     And I should see "Create flavour" in the "#page-header h1" "css_element"
     And I set the field "Title" to "My shiny new flavour"
     And I click on "Save changes" "button"
-    And I should see "Flavours" in the "#region-main h2" "css_element"
+    And I should see "Flavours" in the ".admin_settingspage_tabs_with_tertiary .dropdown-toggle" "css_element"
     And I click on ".action-preview" "css_element" in the "My shiny new flavour" "table_row"
     # We can't check the uploaded image file visually, but we can verify that the favicon is shipped from the theme_boost_union global favicon filearea.
     Then "//head//link[contains(@rel, 'shortcut')][contains(@href, 'pluginfile.php/1/theme_boost_union/favicon')][contains(@href, 'favicon.ico')]" "xpath_element" should exist
@@ -435,9 +461,6 @@ Feature: Configuring the theme_boost_union plugin on the "Flavours" page, applyi
 
   @javascript
   Scenario Outline: Flavours: Activity icon colors - Setting the color (with a global color not having been set before)
-    Given the following config values are set as admin:
-      | config                    | value | plugin            |
-      | activityiconcolorfidelity | 500   | theme_boost_union |
     When I log in as "admin"
     And I navigate to "Appearance > Boost Union > Flavours" in site administration
     And I click on "Create flavour" "button"
@@ -453,30 +476,28 @@ Feature: Configuring the theme_boost_union plugin on the "Flavours" page, applyi
     When I log in as "admin"
     And I am on "Course 1" course homepage
     And I turn editing mode on
-    And I click on "Add an activity or resource" "button" in the "New section" "section"
+    And I click on "Add content" "button" in the "New section" "section"
+    And I click on "Activity or resource" "button" in the "New section" "section"
     # First, we test that the default filter is _not_ set anymore.
-    Then DOM element ".chooser-container .activityiconcontainer.modicon_<modname> img" should not have computed style "filter" "<originalfilter>"
-    # And then, as the hex color to CSS filter conversion results are not reproducible, we test if the applied filter is close enough to the hex color.
+    Then DOM element ".chooser-container .activityiconcontainer.modicon_<modname> img" should not have a CSS filter close to hex color "<originalhex>"
+    # And then we test if the applied filter is close enough to the hex color.
     And DOM element ".chooser-container .activityiconcontainer.modicon_<modname> img" should have a CSS filter close enough to hex color "<colorhex>"
 
-    # Unfortunately, we can only test 4 out of 6 purpose types as Moodle does does not ship with any activity with the
+    # Unfortunately, we can only test 5 out of 7 purpose types as Moodle does does not ship with any activity with the
     # administration and interface types. But this should be an acceptable test coverage anyway.
     Examples:
-      | purposename        | modname | colorhex | originalfilter                                                                              |
-      | assessment         | assign  | #FF0000  | invert(0.36) sepia(0.98) saturate(69.69) hue-rotate(315deg) brightness(0.9) contrast(1.19)  |
-      | collaboration      | data    | #00FF00  | invert(0.25) sepia(0.54) saturate(62.26) hue-rotate(245deg) brightness(1) contrast(1.02)    |
-      | communication      | choice  | #0000FF  | invert(0.48) sepia(0.74) saturate(48.87) hue-rotate(11deg) brightness(1.02) contrast(1.01)  |
-      | content            | book    | #FFFF00  | invert(0.49) sepia(0.52) saturate(46.75) hue-rotate(156deg) brightness(0.89) contrast(1.02) |
-      | interactivecontent | lesson  | #00FFFF  | invert(0.25) sepia(0.63) saturate(11.52) hue-rotate(344deg) brightness(0.94) contrast(0.91) |
+      | purposename        | modname | colorhex | originalhex |
+      | assessment         | assign  | #FFFF00  | #f90086     |
+      | collaboration      | data    | #00FF00  | #5b40ff     |
+      | communication      | choice  | #0000FF  | #eb6200     |
+      | content            | book    | #FFFF00  | #0099ad     |
+      | interactivecontent | lesson  | #00FFFF  | #8d3d1b     |
 
   @javascript
   Scenario Outline: Flavours: Activity icon colors - Setting the color (with the global setting being overridden)
     Given the following config values are set as admin:
       | config                         | value   | plugin            |
       | activityiconcolor<purposename> | #00FFFF | theme_boost_union |
-    And the following config values are set as admin:
-      | config                    | value | plugin            |
-      | activityiconcolorfidelity | 500   | theme_boost_union |
     And the theme cache is purged and the theme is reloaded
     When I log in as "admin"
     And I navigate to "Appearance > Boost Union > Flavours" in site administration
@@ -493,25 +514,23 @@ Feature: Configuring the theme_boost_union plugin on the "Flavours" page, applyi
     When I log in as "admin"
     And I am on "Course 1" course homepage
     And I turn editing mode on
-    And I click on "Add an activity or resource" "button" in the "New section" "section"
+    And I click on "Add content" "button" in the "New section" "section"
+    And I click on "Activity or resource" "button" in the "New section" "section"
     # First, we test that the default filter is _not_ set anymore.
-    Then DOM element ".chooser-container .activityiconcontainer.modicon_<modname> img" should not have computed style "filter" "<originalfilter>"
-    # And then, as the hex color to CSS filter conversion results are not reproducible, we test if the applied filter is close enough to the hex color.
+    Then DOM element ".chooser-container .activityiconcontainer.modicon_<modname> img" should not have a CSS filter close to hex color "<originalhex>"
+    # And then we test if the applied filter is close enough to the hex color.
     And DOM element ".chooser-container .activityiconcontainer.modicon_<modname> img" should have a CSS filter close enough to hex color "<colorhex>"
 
     # We only test 1 out of 6 purpose types as we have tested the rest already in the previous scenario.
     Examples:
-      | purposename | modname | colorhex | originalfilter                                                                             |
-      | assessment  | assign  | #FF0000  | invert(0.36) sepia(0.98) saturate(69.69) hue-rotate(315deg) brightness(0.9) contrast(1.19) |
+      | purposename        | modname | colorhex | originalhex |
+      | assessment         | assign  | #FFFF00  | #f90086     |
 
   @javascript
   Scenario Outline: Flavours: Activity icon colors - Do not set the color (with a global setting being served properly)
     Given the following config values are set as admin:
       | config                         | value      | plugin            |
       | activityiconcolor<purposename> | <colorhex> | theme_boost_union |
-    And the following config values are set as admin:
-      | config                    | value | plugin            |
-      | activityiconcolorfidelity | 500   | theme_boost_union |
     When I log in as "admin"
     And I navigate to "Appearance > Boost Union > Flavours" in site administration
     And I click on "Create flavour" "button"
@@ -526,16 +545,17 @@ Feature: Configuring the theme_boost_union plugin on the "Flavours" page, applyi
     When I log in as "admin"
     And I am on "Course 1" course homepage
     And I turn editing mode on
-    And I click on "Add an activity or resource" "button" in the "New section" "section"
+    And I click on "Add content" "button" in the "New section" "section"
+    And I click on "Activity or resource" "button" in the "New section" "section"
     # First, we test that the default filter is _not_ set anymore.
-    Then DOM element ".chooser-container .activityiconcontainer.modicon_<modname> img" should not have computed style "filter" "<originalfilter>"
-    # And then, as the hex color to CSS filter conversion results are not reproducible, we test if the applied filter is close enough to the hex color.
+    Then DOM element ".chooser-container .activityiconcontainer.modicon_<modname> img" should not have a CSS filter close to hex color "<originalhex>"
+    # And then we test if the applied filter is close enough to the hex color.
     And DOM element ".chooser-container .activityiconcontainer.modicon_<modname> img" should have a CSS filter close enough to hex color "<colorhex>"
 
     # We only test 1 out of 6 purpose types as we have tested the rest already in the previous scenario.
     Examples:
-      | purposename | modname | colorhex | originalfilter                                                                             |
-      | assessment  | assign  | #FF0000  | invert(0.36) sepia(0.98) saturate(69.69) hue-rotate(315deg) brightness(0.9) contrast(1.19) |
+      | purposename        | modname | colorhex | originalhex |
+      | assessment         | assign  | #FFFF00  | #f90086     |
 
   @javascript
   Scenario Outline: Setting: Navbar color - Set the navbar color (with a global color not having been set before)
@@ -554,13 +574,14 @@ Feature: Configuring the theme_boost_union plugin on the "Flavours" page, applyi
     When I log in as "admin"
     And I am on "Course 1" course homepage
     Then the "class" attribute of ".navbar" "css_element" should contain "<classes>"
+    And the "data-bs-theme" attribute of ".navbar" "css_element" should <databstheme>
 
     Examples:
-      | setting      | classes                 |
-      | light        | navbar-light bg-white   |
-      | dark         | navbar-dark bg-dark     |
-      | primarylight | navbar-light bg-primary |
-      | primarydark  | navbar-dark bg-primary  |
+      | setting      | classes    | databstheme     |
+      | light        | bg-body    | not be set      |
+      | dark         | bg-dark    | contain "dark"  |
+      | primarylight | bg-primary | contain "light" |
+      | primarydark  | bg-primary | contain "dark"  |
 
   @javascript
   Scenario Outline: Setting: Navbar color - Set the navbar color (with the global setting being overridden)
@@ -583,11 +604,12 @@ Feature: Configuring the theme_boost_union plugin on the "Flavours" page, applyi
     And I am on "Course 1" course homepage
     Then the "class" attribute of ".navbar" "css_element" should contain "<classes>"
     And the "class" attribute of ".navbar" "css_element" should not contain "<shouldnotclasses>"
+    And the "data-bs-theme" attribute of ".navbar" "css_element" should <databstheme>
 
     # We only test 1 out of 4 color types as we have tested the rest already in the previous scenario.
     Examples:
-      | globalsetting | setting | classes               | shouldnotclasses    |
-      | dark          | light   | navbar-light bg-white | navbar-dark bg-dark |
+      | globalsetting | setting | classes | databstheme | shouldnotclasses |
+      | dark          | light   | bg-body | not be set  | bg-dark          |
 
   @javascript
   Scenario Outline: Setting: Navbar color - Do not set the navbar color (with a global setting being served properly)
@@ -609,11 +631,12 @@ Feature: Configuring the theme_boost_union plugin on the "Flavours" page, applyi
     When I log in as "admin"
     And I am on "Course 1" course homepage
     Then the "class" attribute of ".navbar" "css_element" should contain "<classes>"
+    And the "data-bs-theme" attribute of ".navbar" "css_element" should <databstheme>
 
     # We only test 1 out of 4 color types as we have tested the rest already in the previous scenario.
     Examples:
-      | setting | classes             |
-      | dark    | navbar-dark bg-dark |
+      | setting | classes | databstheme    |
+      | dark    | bg-dark | contain "dark" |
 
   @javascript
   Scenario: Flavours: Raw (initial) SCSS - Add custom SCSS to the page
@@ -634,6 +657,6 @@ Feature: Configuring the theme_boost_union plugin on the "Flavours" page, applyi
     #page-header h1 { display: $myvariable; }
     """
     And I click on "Save changes" "button"
-    And I should see "Flavours" in the "#region-main h2" "css_element"
+    And I should see "Flavours" in the ".admin_settingspage_tabs_with_tertiary .dropdown-toggle" "css_element"
     And I click on ".action-preview" "css_element" in the "My shiny new flavour" "table_row"
     Then I should not see "Preview flavour" in the "#page-header .page-header-headings" "css_element"
