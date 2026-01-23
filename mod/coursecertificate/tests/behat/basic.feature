@@ -9,6 +9,7 @@ Feature: Basic functionality of course certificate module
       | username | firstname | lastname | email                |
       | teacher1 | Teacher   | 1        | teacher1@example.com |
       | student1 | Student   | 1        | student1@example.com |
+      | student2 | Student   | 2        | student2@example.com |
       | manager1 | Manager   | 1        | manager1@example.com |
     And the following "courses" exist:
       | fullname | shortname | format |
@@ -18,6 +19,7 @@ Feature: Basic functionality of course certificate module
       | teacher1 | C1     | editingteacher |
       | manager1 | C1     | editingteacher |
       | student1 | C1     | student        |
+      | student2 | C1     | student        |
     And the following "roles" exist:
       | shortname            | name                       | archetype |
       | certificateissuer    | Certificate issuer         |           |
@@ -35,7 +37,8 @@ Feature: Basic functionality of course certificate module
       | Certificate of participation | 1       |
       | Certificate of completion    | 0       |
     When I log in as "teacher1"
-    Then I add a new instance of coursecertificate module to course "Course 1" section "1"
+    And I am on "Course 1" course homepage with editing mode on
+    And I add a "coursecertificate" activity to course "Course 1" section "1"
     And "Manage certificate templates" "link" should not exist
     And I click on "Template" "select"
     And I should not see "Certificate of completion"
@@ -53,7 +56,7 @@ Feature: Basic functionality of course certificate module
     And I press "Enable"
     And I press "Confirm"
     And I should see "The automatic sending of this certificate is enabled"
-    And I open course or activity settings page
+    And I navigate to "Settings" in current page administration
     And I set the following fields to these values:
       | Name      | Your super awesome certificate     |
     And I press "Save and display"
@@ -77,7 +80,8 @@ Feature: Basic functionality of course certificate module
       | name                         | shared  |
       | Certificate of participation | 1       |
     When I log in as "teacher1"
-    And I add a new instance of coursecertificate module to course "Course 1" section "1"
+    And I am on "Course 1" course homepage with editing mode on
+    And I add a "coursecertificate" activity to course "Course 1" section "1"
     And I set the following fields to these values:
       | Name              | Your awesome certificate     |
       | Template          | Certificate of participation |
@@ -105,7 +109,8 @@ Feature: Basic functionality of course certificate module
       | name                         | shared  |
       | Certificate of participation | 1       |
     When I log in as "teacher1"
-    And I add a new instance of coursecertificate module to course "Course 1" section "1"
+    And I am on "Course 1" course homepage with editing mode on
+    And I add a "coursecertificate" activity to course "Course 1" section "1"
     And I set the following fields to these values:
       | Name              | Your awesome certificate     |
       | Template          | Certificate of participation |
@@ -138,7 +143,7 @@ Feature: Basic functionality of course certificate module
     And I duplicate "Certificate" activity
     And I wait until "Certificate (copy)" "link" exists
     And I delete "Certificate (copy)" activity
-    Then I should not see "Certificate (copy)"
+    Then I should not see "Certificate (copy)" in the "region-main" "region"
 
   Scenario: Manager can create an instance of course certificate module with non shared templates
     And the following "permission overrides" exist:
@@ -149,7 +154,8 @@ Feature: Basic functionality of course certificate module
       | Certificate of participation | 1       |
       | Certificate of completion    | 0       |
     When I log in as "manager1"
-    And I add a new instance of coursecertificate module to course "Course 1" section "1"
+    And I am on "Course 1" course homepage with editing mode on
+    And I add a "coursecertificate" activity to course "Course 1" section "1"
     Then "Manage certificate templates" "link" should exist
     And I set the following fields to these values:
       | Name     | Your awesome certificate  |
@@ -164,7 +170,8 @@ Feature: Basic functionality of course certificate module
       | name                         | shared  |
       | Certificate of completion    | 0       |
     When I log in as "teacher1"
-    And I add a new instance of coursecertificate module to course "Course 1" section "1"
+    And I am on "Course 1" course homepage with editing mode on
+    And I add a "coursecertificate" activity to course "Course 1" section "1"
     Then I should see "There are no available templates. Please contact the site administrator."
     And I press "Save and display"
     And I should see "You must supply a value here."
@@ -174,7 +181,8 @@ Feature: Basic functionality of course certificate module
       | capability                      | permission | role                 | contextlevel | reference |
       | tool/certificate:manage         | Allow      | certificateissuer    | System       |           |
     When I log in as "manager1"
-    And I add a new instance of coursecertificate module to course "Course 1" section "1"
+    And I am on "Course 1" course homepage with editing mode on
+    And I add a "coursecertificate" activity to course "Course 1" section "1"
     Then I should see "There are no available templates. Please go to certificate template management page and create a new one."
     And I press "Save and display"
     And I should see "You must supply a value here."
@@ -188,14 +196,15 @@ Feature: Basic functionality of course certificate module
       | template                      | user      | course | component             |
       | Certificate of participation  | student1  | C1     | mod_coursecertificate |
     When I log in as "teacher1"
-    And I add a new instance of coursecertificate module to course "Course 1" section "1"
+    And I am on "Course 1" course homepage with editing mode on
+    And I add a "coursecertificate" activity to course "Course 1" section "1"
     And I set the following fields to these values:
       | Name     | Your awesome certificate     |
       | Template | Certificate of participation |
     And I press "Save and return to course"
     And I click on "Your awesome certificate" "link" in the "region-main" "region"
     Then I should see "Student 1"
-    And I open course or activity settings page
+    And I navigate to "Settings" in current page administration
     And the "Template" "select" should be disabled
 
   Scenario: Teacher can revoke a certificate
@@ -206,7 +215,8 @@ Feature: Basic functionality of course certificate module
       | template                      | user      | course | component             |
       | Certificate of participation  | student1  | C1     | mod_coursecertificate |
     When I log in as "teacher1"
-    And I add a new instance of coursecertificate module to course "Course 1" section "1"
+    And I am on "Course 1" course homepage with editing mode on
+    And I add a "coursecertificate" activity to course "Course 1" section "1"
     And I set the following fields to these values:
       | Name     | Your awesome certificate     |
       | Template | Certificate of participation |
@@ -215,6 +225,29 @@ Feature: Basic functionality of course certificate module
     And I press "Revoke" action in the "Student 1" report row
     And I click on "Revoke" "button" in the "Confirm" "dialogue"
     And I should see "Nothing to display"
+
+  Scenario: Teacher can renew certificates
+    When the following certificate templates exist:
+      | name                         | shared  |
+      | Certificate of participation | 1       |
+    And the following certificate issues exist:
+      | template                      | user      | course | component             |
+      | Certificate of participation  | student1  | C1     | mod_coursecertificate |
+      | Certificate of participation  | student2  | C1     | mod_coursecertificate |
+    # TODO: remove admin and use teacher1 when https://moodle.atlassian.net/browse/WPOS-176 is fixed
+    And I log in as "admin"
+    And I am on "Course 1" course homepage with editing mode on
+    And I add a "coursecertificate" activity to course "Course 1" section "1"
+    And I set the following fields to these values:
+      | Name     | Your awesome certificate     |
+      | Template | Certificate of participation |
+    And I press "Save and return to course"
+    And I click on "Your awesome certificate" "link" in the "region-main" "region"
+    And I click on "input[name='report-select-row[]']" "css_element" in the "student1" "table_row"
+    And I click on "input[name='report-select-row[]']" "css_element" in the "student2" "table_row"
+    And I set the field "With selected users..." to "Regenerate issued certificates"
+    And I click on "Regenerate" "button" in the "Regenerate all issued certificates" "dialogue"
+    And I should see "The issued certificates are being regenerated"
 
   Scenario: Teacher can manage blocks in the module page
     And the following certificate templates exist:
@@ -234,18 +267,15 @@ Feature: Basic functionality of course certificate module
     Then I should see "This is my block"
 
   Scenario: Display information about all coursecertificate activities
-    And the following certificate templates exist:
+    Given the following certificate templates exist:
       | name                         | shared  |
       | Certificate of participation | 1       |
     And the following "activities" exist:
       | activity          | name           | intro             | course | idnumber           | template                     |
       | coursecertificate | Certificate 01 | Certificate intro | C1     | coursecertificate1 | Certificate of participation |
       | coursecertificate | Certificate 02 | Certificate intro | C1     | coursecertificate1 | Certificate of participation |
-    When I log in as "teacher1"
-    And I am on "Course 1" course homepage with editing mode on
-    And I add the "Activities" block
-    And I click on "Course certificates" "link" in the "Activities" "block"
-    And I should see "Certificate 01"
+    When I am on the "Course 1" "mod_coursecertificate > Index" page logged in as "teacher1"
+    Then I should see "Certificate 01"
     And I should see "Certificate 02"
     And I click on "Certificate 01" "link" in the "region-main" "region"
     And I should see "Nothing to display"
@@ -261,8 +291,7 @@ Feature: Basic functionality of course certificate module
       | coursecertificate | Certificate 01 | Certificate intro | C1     | coursecertificate1 | Certificate of participation A |
     When I log in as "admin"
     And I navigate to "Certificates > Manage certificate templates" in site administration
-    And I click on "Actions" "icon" in the "Certificate of participation A" "table_row"
-    And I choose "Delete" in the open action menu
+    And I press "Delete" action in the "Certificate of participation A" report row
     And I click on "Delete" "button" in the "Confirm" "dialogue"
     And I log out
     And I log in as "teacher1"
@@ -280,7 +309,7 @@ Feature: Basic functionality of course certificate module
     And I log in as "teacher1"
     And I am on "Course 1" course homepage with editing mode on
     And I click on "Certificate 01" "link" in the "region-main" "region"
-    And I open course or activity settings page
+    And I navigate to "Settings" in current page administration
     And I set the following fields to these values:
       | Template  | Certificate of participation B |
     And I press "Save and display"

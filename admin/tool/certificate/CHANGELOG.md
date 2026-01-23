@@ -1,5 +1,36 @@
 # Changelog
 
+## 5.0.4 - 2025-12-09
+### Added
+- Added bulk certificate regeneration
+### Changed
+- Updated all time and date handling to use the new Clock API
+- Compatibility with latest codechecker standards
+### Fixed
+- Fixed exception when editing a certificate on a new site
+
+## 5.0.3 - 2025-10-07
+### Added
+- Added support for Moodle 5.1
+
+## 5.0.2 - 2025-08-12
+### Added
+- Added mobile app version of "My certificates"
+### Fixed
+- Fixed issue where bulk PDF generation could fill up local temporary directory
+
+## 5.0.1 - 2025-06-10
+### Fixed
+- Fixed an issue where course navigation was not working correctly when viewing a certificate
+
+## 5.0 - 2025-04-14
+### Added
+- Added support for Moodle 5.0
+
+## 4.5.3 - 2025-03-18
+### Fixed
+- behat tests checking that certificate opens in a new window failing with selenium/standalone-chrome:4
+
 ## 4.5.1 - 2024-12-10
 ### Fixed
 - issuing scheduled task throws exception on already created file under a race condition

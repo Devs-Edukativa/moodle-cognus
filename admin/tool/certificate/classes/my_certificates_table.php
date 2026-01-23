@@ -121,18 +121,13 @@ class my_certificates_table extends \table_sql {
      * @return string
      */
     public function col_name($certificate) {
-        global $DB;
-
         $context = \context::instance_by_id($certificate->contextid);
         $name = format_string($certificate->name, true, ['context' => $context]);
 
-        if ($certificate->courseid) {
-            // Obtain course directly from DB to allow missing courses.
-            if ($course = $DB->get_record('course', ['id' => $certificate->courseid])) {
-                $context = \context_course::instance($course->id);
-                $name .= " - " . format_string($course->fullname, true, ['context' => $context]);
-            }
+        if ($certificate->coursename !== null) {
+            $name .= " - " . format_string($certificate->coursename, true, ['context' => $context]);
         }
+
         return $name;
     }
 
@@ -157,8 +152,12 @@ class my_certificates_table extends \table_sql {
             return get_string('never');
         }
         $column = userdate($certificate->expires);
-        if ($certificate->expires && $certificate->expires <= time()) {
-            $column .= \html_writer::tag('span', get_string('expired', 'tool_certificate'), ['class' => 'badge badge-secondary']);
+        if ($certificate->expires && $certificate->expires <= \core\di::get(\core\clock::class)->time()) {
+            $column .= \html_writer::tag(
+                'span',
+                get_string('expired', 'tool_certificate'),
+                ['class' => 'badge bg-secondary text-dark']
+            );
         }
         return $column;
     }
@@ -170,8 +169,11 @@ class my_certificates_table extends \table_sql {
      * @return string
      */
     public function col_code($issue) {
-        return \html_writer::link(new \moodle_url('/admin/tool/certificate/index.php', ['code' => $issue->code]),
-                                  $issue->code, ['title' => get_string('verify', 'tool_certificate')]);
+        return \html_writer::link(
+            new \moodle_url('/admin/tool/certificate/index.php', ['code' => $issue->code]),
+            $issue->code,
+            ['title' => get_string('verify', 'tool_certificate')]
+        );
     }
 
     /**
@@ -200,8 +202,12 @@ class my_certificates_table extends \table_sql {
 
         $this->pagesize($pagesize, $total);
 
-        $this->rawdata = certificate::get_issues_for_user($this->userid, $this->get_page_start(),
-            $this->get_page_size(), $this->get_sql_sort());
+        $this->rawdata = certificate::get_issues_for_user(
+            $this->userid,
+            $this->get_page_start(),
+            $this->get_page_size(),
+            $this->get_sql_sort()
+        );
 
         // Set initial bars.
         if ($useinitialsbar) {
@@ -220,24 +226,6 @@ class my_certificates_table extends \table_sql {
     }
 
     /**
-     * Get the certificate url to show
-     *
-     * @param string $issuecode
-     * @return string
-     */
-    private function get_shareonlinkedincerturl($issuecode) {
-        $showshareonlinkedin = (int)get_config('tool_certificate', 'show_shareonlinkedin');
-        switch ($showshareonlinkedin) {
-            case self::SHOW_LINK_TO_VERIFICATION_PAGE:
-                return template::verification_url($issuecode);
-            case self::SHOW_LINK_TO_CERTIFICATE_PAGE:
-                return template::view_url($issuecode);
-            default:
-                return '';
-        }
-    }
-
-    /**
      * Generate the LinkedIn column
      *
      * @param \stdClass $issue
@@ -251,7 +239,7 @@ class my_certificates_table extends \table_sql {
             'issueYear' => date('Y', $issue->timecreated),
             'issueMonth' => date('m', $issue->timecreated),
             'certId' => $issue->code,
-            'certUrl' => $this->get_shareonlinkedincerturl($issue->code),
+            'certUrl' => template::get_shareonlinkedincerturl($issue->code),
         ];
 
         if ($issue->expires !== '0') {

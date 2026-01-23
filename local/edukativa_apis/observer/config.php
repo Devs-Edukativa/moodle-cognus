@@ -14,7 +14,7 @@ defined('MOODLE_INTERNAL') || die();
 // Backend API Configuration
 $config = [
     // Backend base URL
-    'backend_url' => 'https://backend.edukativa.com.br',
+    'backend_url' => 'https://app.cognusplay.com.br/backend',
     
     // Authentication headers
     'x_url' => 'cognus.edukativa.com.br',

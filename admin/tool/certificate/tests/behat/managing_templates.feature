@@ -47,6 +47,24 @@ Feature: Being able to manage site templates
     And I navigate to "Certificates > Manage certificate templates" in site administration
     Then I should see "Certificate 1"
 
+  Scenario: Adding a course template
+    Given the following "course" exists:
+      | fullname  | Course 1 |
+      | shortname | C1       |
+    When I am on the "Course 1" course page logged in as "admin"
+    And I navigate to "Certificates" in current page administration
+    And I follow "New certificate template"
+    And I set the field "Name" to "Certificate 1"
+    And I click on "Save" "button" in the ".modal.show .modal-footer" "css_element"
+    And I should see "Certificate 1" in the "page-header" "region"
+    And I navigate to "Details" in current page administration
+    And I set the following fields to these values:
+      | name          | Certificate modified |
+    And I click on "Save changes" "button"
+    And I am on the "Course 1" course page
+    And I navigate to "Certificates" in current page administration
+    Then I should see "Certificate modified"
+
   Scenario: Adding a template when user can manage templates anywhere
     When the following "users" exist:
       | username | firstname  | lastname  | email               |
@@ -141,12 +159,10 @@ Feature: Being able to manage site templates
     And I press "Save"
     And I wait until ".toast-message" "css_element" does not exist
     When I navigate to "Certificates > Manage certificate templates" in site administration
-    And I click on "Actions" "icon" in the "Certificate 1" "table_row"
-    And I choose "Delete" in the open action menu
+    And I press "Delete" action in the "Certificate 1" report row
     And I click on "Cancel" "button" in the "Confirm" "dialogue"
     And I should see "Certificate 1"
-    And I click on "Actions" "icon" in the "Certificate 1" "table_row"
-    And I choose "Delete" in the open action menu
+    And I press "Delete" action in the "Certificate 1" report row
     And I click on "Delete" "button" in the "Confirm" "dialogue"
     Then I should not see "Certificate 1"
 
@@ -160,13 +176,11 @@ Feature: Being able to manage site templates
     And I add the element "User field" to page "1" of the "Certificate 1" site certificate template
     And I click on "Save" "button" in the ".modal.show .modal-footer" "css_element"
     When I navigate to "Certificates > Manage certificate templates" in site administration
-    And I click on "Actions" "icon" in the "Certificate 1" "table_row"
-    And I choose "Duplicate" in the open action menu
+    And I press "Duplicate" action in the "Certificate 1" report row
     And I click on "Cancel" "button" in the "Confirm" "dialogue"
     And I should see "Certificate 1"
     And I should not see "Certificate 1 (copy)"
-    And I click on "Actions" "icon" in the "Certificate 1" "table_row"
-    And I choose "Duplicate" in the open action menu
+    And I press "Duplicate" action in the "Certificate 1" report row
     And I click on "Duplicate" "button" in the "Confirm" "dialogue"
     Then I should see "Certificate 1"
     And I should see "Certificate 1 (copy)"
@@ -184,16 +198,14 @@ Feature: Being able to manage site templates
       | Certificate 1 |           |
     And I log in as "manager"
     When I navigate to "Certificates > Manage certificate templates" in site administration
-    And I click on "Actions" "icon" in the "Certificate 1" "table_row"
-    And I choose "Duplicate" in the open action menu
-    And I click on "Cancel" "button" in the ".modal.show .modal-footer" "css_element"
+    And I press "Duplicate" action in the "Certificate 1" report row
+    And I click on "Cancel" "button" in the "Confirm" "dialogue"
     And I should see "Certificate 1"
     And I should not see "Certificate 1 (copy)"
-    And I click on "Actions" "icon" in the "Certificate 1" "table_row"
-    And I choose "Duplicate" in the open action menu
+    And I press "Duplicate" action in the "Certificate 1" report row
     And I set the following fields to these values:
       | Course category | Category2 |
-    And I click on "Duplicate" "button" in the ".modal.show .modal-footer" "css_element"
+    And I click on "Duplicate" "button" in the "Confirm" "dialogue"
     Then the following should exist in the "reportbuilder-table" table:
       | Name                 | Course category |
       | Certificate 1        | None            |

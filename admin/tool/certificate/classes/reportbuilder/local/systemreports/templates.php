@@ -42,7 +42,6 @@ use tool_certificate\reportbuilder\local\formatters\certificate as certificatefo
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class templates extends system_report {
-
     /** @var templatepersistent */
     protected $lasttemplate;
     /** @var bool */
@@ -76,8 +75,10 @@ class templates extends system_report {
         $this->add_entity($coursecatentity);
 
         // Any columns required by actions should be defined here to ensure they're always available.
-        $this->add_base_fields("{$entitymainalias}." . implode(", {$entitymainalias}.",
-                array_diff(array_keys(templatepersistent::properties_definition()), ['usermodified'])));
+        $this->add_base_fields("{$entitymainalias}." . implode(
+            ", {$entitymainalias}.",
+            array_diff(array_keys(templatepersistent::properties_definition()), ['usermodified'])
+        ));
 
         // Add report base condition where templates are present and visible to user.
         [$sql, $params] = certificate::get_visible_categories_contexts_sql("{$entitymainalias}.contextid");
@@ -129,10 +130,11 @@ class templates extends system_report {
         }
 
         // Add link to category name column.
+        $categoryentity = $this->get_entity('course_category');
         if ($column = $this->get_column('course_category:name')) {
             $column
                 ->set_title(new lang_string('coursecategory'))
-                ->set_callback([certificateformatter::class, 'course_category_name'])
+                ->add_field($categoryentity->get_table_alias('course_categories') . '.id')
                 ->add_callback([$this, 'coursecategoryname']);
         }
     }
@@ -167,7 +169,7 @@ class templates extends system_report {
             ],
             false,
             new lang_string('preview')
-        ))->add_callback(function() {
+        ))->add_callback(function () {
             return $this->lasttemplate->can_manage();
         }));
 
@@ -181,7 +183,7 @@ class templates extends system_report {
             ],
             false,
             new lang_string('issuecertificates', 'tool_certificate')
-        ))->add_callback(function() {
+        ))->add_callback(function () {
             return $this->lasttemplate->can_issue_to_anybody();
         }));
 
@@ -197,8 +199,22 @@ class templates extends system_report {
             ],
             false,
             new lang_string('duplicate')
-        ))->add_callback(function() {
+        ))->add_callback(function () {
             return $this->lasttemplate->can_manage();
+        }));
+
+        // Regenerate all issued certificates.
+        $this->add_action((new action(
+            new moodle_url('#'),
+            new pix_icon('a/refresh', ''),
+            [
+                'data-action' => 'issueall',
+                'data-id' => ':id',
+            ],
+            false,
+            new lang_string('regenerateall', 'tool_certificate')
+        ))->add_callback(function () {
+            return $this->lasttemplate->can_issue_to_anybody();
         }));
 
         // Delete.
@@ -212,7 +228,7 @@ class templates extends system_report {
             ],
             false,
             new lang_string('delete')
-        ))->add_callback(function() {
+        ))->add_callback(function () {
             return $this->lasttemplate->can_manage();
         }));
     }
@@ -243,8 +259,16 @@ class templates extends system_report {
             $edithint = get_string('edittemplatename', 'tool_certificate');
             $editlabel = get_string('newvaluefor', 'form', $template->get_formatted_name());
 
-            $inlineeditable = new inplace_editable('tool_certificate', 'templatename',
-                $template->get('id'), true, $name, $value, $edithint, $editlabel);
+            $inlineeditable = new inplace_editable(
+                'tool_certificate',
+                'templatename',
+                $template->get('id'),
+                true,
+                $name,
+                $value,
+                $edithint,
+                $editlabel
+            );
 
             $name = $inlineeditable->render($PAGE->get_renderer('core'));
         } else if ($template->can_view_issues()) {
@@ -262,7 +286,7 @@ class templates extends system_report {
      * @return string
      */
     public function coursecategoryname(string $catname, stdClass $category): string {
-        if (empty($catname) || empty(trim($category->id))) {
+        if ($catname === '') {
             return get_string('none');
         }
         $url = new moodle_url('/course/index.php', ['categoryid' => $category->id]);

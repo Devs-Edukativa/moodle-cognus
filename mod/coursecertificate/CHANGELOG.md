@@ -1,5 +1,30 @@
 # Changelog
 
+## 5.0.4 - 2025-12-09
+### Added
+- Added bulk certificate regeneration
+### Changed
+- Updated all time and date handling to use the new Clock API
+- Compatibility with latest codechecker standards
+### Fixed
+- Fixed backup/restore of activity expiration settings
+
+## 5.0.3 - 2025-10-07
+### Added
+- Added support for Moodle 5.1
+
+## 5.0.1 - 2025-06-10
+### Added
+- Improved CI automation
+
+## 5.0 - 2025-04-14
+### Added
+- Added support for Moodle 5.0
+
+## 4.5.3 - 2025-03-18
+### Fixed
+- behat tests checking that certificate opens in a new window failing with selenium/standalone-chrome:4
+
 ## 4.4.4 - 2024-10-08
 ### Added
 - Compatibility with Moodle 4.5; Updates to version testing matrices
