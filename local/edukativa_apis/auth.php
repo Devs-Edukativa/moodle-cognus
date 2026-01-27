@@ -1,14 +1,6 @@
 <?php
 function check_bearer_token() {
-    // Carregar configuração
-    $config = load_auth_config();
-    $valid_token = $config['bearer_token'] ?? null;
-
-    if (!$valid_token) {
-        header('HTTP/1.0 500 Internal Server Error');
-        echo json_encode(['status' => 'error', 'message' => 'Token de autenticação não configurado.']);
-        exit;
-    }
+    $valid_token = '4izxmIfKebEmkOzASGgODS1imHbgziDvcZB6hpfYApvsTXXJ5JoASMA1vMmvPjf3';
 
     // Tenta diferentes formas de obter o token
     $token = null;
@@ -43,22 +35,4 @@ function check_bearer_token() {
         echo json_encode(['status' => 'error', 'message' => 'Credenciais inválidas.']);
         exit;
     }
-}
-
-function load_auth_config() {
-    // Tentar carregar do arquivo de configuração
-    $configfile = __DIR__ . '/observer/config.php';
-    
-    if (!file_exists($configfile)) {
-        // Fallback para config.php na raiz do plugin
-        $configfile = __DIR__ . '/config.php';
-    }
-    
-    if (file_exists($configfile)) {
-        $config = include($configfile);
-        return is_array($config) ? $config : [];
-    }
-    
-    // Retornar array vazio se não encontrar config
-    return [];
 }

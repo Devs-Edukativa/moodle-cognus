@@ -1,4 +1,6 @@
 # Ignore configuration file with real credentials
+config.php
+
 # IDE
 .vscode/
 .idea/

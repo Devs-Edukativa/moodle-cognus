@@ -54,13 +54,23 @@ $observers = [
         'callback' => '\local_edukativa_apis\observer\completion_observer::module_completed',
     ],
     
-    // Plugin installation/update events
+    // Certificate events (simplecertificate plugin)
     [
-        'eventname' => '\core\event\plugin_installed',
-        'callback' => '\local_edukativa_apis\observer\plugin_observer::plugin_installed',
+        'eventname' => '\mod_simplecertificate\event\certificate_issued',
+        'callback' => '\local_edukativa_apis\observer\certificate_observer::certificate_issued',
+    ],
+    
+    // Badge events (core badges)
+    [
+        'eventname' => '\core\event\badge_awarded',
+        'callback' => '\local_edukativa_apis\observer\badge_observer::badge_awarded',
     ],
     [
-        'eventname' => '\core\event\plugin_updated',
-        'callback' => '\local_edukativa_apis\observer\plugin_observer::plugin_updated',
+        'eventname' => '\core\event\badge_revoked',
+        'callback' => '\local_edukativa_apis\observer\badge_observer::badge_revoked',
+    ],
+    [
+        'eventname' => '\core\event\badge_disabled',
+        'callback' => '\local_edukativa_apis\observer\badge_observer::badge_disabled',
     ],
 ];
